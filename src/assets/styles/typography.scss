@@ -1,0 +1,80 @@
+h1, .h1 {
+  font-size: 32px;
+  font-weight: 500;
+}
+
+h2, .h2 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+h3, .h3 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+h4, .h4 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+h5, .h5 {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+h6, .h6 {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.heading {
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 0;
+  color: map-get($black, 'base');
+  &--1 {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+  &--2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  &--3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  &--4 {
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+  &--text {
+    font-size: 1.6rem;
+    color: map-get($black, 'base');
+    font-weight: 400;
+  }
+  &--small {
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+  &--muted {
+    color: map-get($black, 'warn-grey');
+  }
+  &--center {
+    text-align: center;
+  }
+  &--link {
+    color: map-get($blue, 'light-navy')
+  }
+  &--white {
+    color: map-get($white, 'base')
+  }
+  // &--header {
+  //   text-align: center;
+  // }
+}
+
+body {
+  font-family: $myriad_pro;
+}

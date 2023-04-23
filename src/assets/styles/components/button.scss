@@ -1,0 +1,22 @@
+.btn {
+  cursor: pointer;
+  text-align: center;
+  font-weight: 400;
+  border-radius: .5rem;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  padding: 1.2rem 1.5rem 1.2rem 1rem;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  transition: all .3s;
+  outline: none;
+  &--primary {
+    padding: 10px 15px 10px 10px;
+    background-color: map-get($blue, 'dodger-blue');
+    color: map-get($white, 'base');
+    &:hover {
+      background-color: map-get($blue, 'dodger-blue');
+    }
+  }
+}
