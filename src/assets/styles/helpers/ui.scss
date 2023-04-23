@@ -1,0 +1,147 @@
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+$sizes_height_width: (25, 50, 75, 100);
+@each $size in $sizes_height_width {
+  .w-#{$size} {
+    width: #{$size + '%'};
+  }
+  .h-#{$size} {
+    height: #{$size + '%'};
+  }
+}
+
+$sizes: (0, 2, 4, 6, 8, 10, 12, 14, 16, 20, 22, 24, 26, 28, 30, 36, 42, 48, 54, 'auto');
+
+@each $size in $sizes {
+  @if ($size == 'auto') {
+    .m-l-#{$size} {
+      margin-left: #{$size};
+    }
+  
+    .m-r-#{$size} {
+      margin-right: #{$size};
+    }
+  
+    .m-t-#{$size} {
+      margin-top: #{$size};
+    }
+  
+    .m-b-#{$size} {
+      margin-bottom: #{$size};
+    }
+  
+    .m-y-#{$size} {
+      margin-top: #{$size};
+      margin-bottom: #{$size};
+    }
+  
+    .m-#{$size} {
+      margin: #{$size};
+    }
+  
+    .m-x-#{$size} {
+      margin-left: #{$size};
+      margin-right: #{$size};
+    }
+  
+    .p-l-#{$size} {
+      padding-left: #{$size};
+    }
+  
+    .p-r-#{$size} {
+      padding-right: #{$size};
+    }
+  
+    .p-t-#{$size} {
+      padding-top: #{$size};
+    }
+  
+    .p-b-#{$size} {
+      padding-bottom: #{$size};
+    }
+  
+    .p-y-#{$size} {
+      padding-top: #{$size};
+      padding-bottom: #{$size};
+    }
+  
+    .p-x-#{$size} {
+      padding-left: #{$size};
+      padding-right: #{$size};
+    }
+  
+    .p-#{$size} {
+      margin: #{$size};
+    }
+  } @else {
+    .m-l-#{$size} {
+      margin-left: #{$size}px;
+    }
+  
+    .m-r-#{$size} {
+      margin-right: #{$size}px;
+    }
+  
+    .m-t-#{$size} {
+      margin-top: #{$size}px;
+    }
+  
+    .m-b-#{$size} {
+      margin-bottom: #{$size}px;
+    }
+  
+    .m-y-#{$size} {
+      margin-top: #{$size}px;
+      margin-bottom: #{$size}px;
+    }
+  
+    .m-#{$size} {
+      margin: #{$size}px;
+    }
+  
+    .m-x-#{$size} {
+      margin-left: #{$size}px;
+      margin-right: #{$size}px;
+    }
+  
+    .p-l-#{$size} {
+      padding-left: #{$size}px;
+    }
+  
+    .p-r-#{$size} {
+      padding-right: #{$size}px;
+    }
+  
+    .p-t-#{$size} {
+      padding-top: #{$size}px;
+    }
+  
+    .p-b-#{$size} {
+      padding-bottom: #{$size}px;
+    }
+  
+    .p-y-#{$size} {
+      padding-top: #{$size}px;
+      padding-bottom: #{$size}px;
+    }
+  
+    .p-x-#{$size} {
+      padding-left: #{$size}px;
+      padding-right: #{$size}px;
+    }
+  
+    .p-#{$size} {
+      margin: #{$size}px;
+    }
+  }
+}

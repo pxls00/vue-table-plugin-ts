@@ -1,0 +1,20 @@
+.profile {
+  position: relative;
+  cursor: pointer;
+  border-top: 1px solid map-get($blue, 'dark-blue-grey');
+  &__content {
+    &--avatar {
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+    }
+  }
+  &__actions {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    border-radius: 5px;
+    a {
+      display: flex;
+    }
+  }
+}
