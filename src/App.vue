@@ -1,22 +1,24 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
-  <header>
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">
-          Home
-        </RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <component :is="layoutName">
+    <RouterView />
+  </component>
 </template>
 
-<style scoped>
-</style>
+<script setup lang="ts">
+import { 
+  // useRoute, 
+  RouterView
+} from 'vue-router'
+
+import { computed } from 'vue'
+
+import DefaultLayout from '@/layouts/default.vue'
+// import AuthLayout from '@/layouts/auth.vue'
+
+// const route = useRoute()
+
+const layoutName = computed(() => {
+  // return route.meta.layout === 'default' ? DefaultLayout : AuthLayout
+  return DefaultLayout
+})
+</script>

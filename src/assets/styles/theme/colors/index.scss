@@ -1,11 +1,13 @@
 @import './black.scss';
 @import './blue.scss';
 @import './white.scss';
+@import './orange.scss';
 
 $colors: (
   'black': $black,
   'blue': $blue,
-  'white': $white
+  'white': $white,
+  'orange': $orange
 );
 
 @mixin background-color($color_value) {

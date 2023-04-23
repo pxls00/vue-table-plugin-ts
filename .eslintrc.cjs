@@ -27,34 +27,6 @@ module.exports = {
     'vue/html-indent': ['error', 2],
     'no-multi-spaces': ['error'],
 
-    'vue/html-self-closing': [
-      'error',
-      {
-        html: {
-          void: 'always', // area , base , br , col , command , embed , hr , img , input , keygen , link , meta , param , source , track , wbr.
-          normal: 'never', // p, h, div ...
-          component: 'always', // custom components
-        },
-      },
-    ],
-
-    'vue/html-closing-bracket-spacing': [
-      'error',
-      {
-        startTag: 'never',
-        endTag: 'never',
-        selfClosingTag: 'always',
-      },
-    ],
-
-    'vue/html-closing-bracket-newline': [
-      'error',
-      {
-        singleline: 'never',
-        multiline: 'always',
-      },
-    ],
-
     // lines for simple eslint config
     'no-unused-vars': [
       'error',

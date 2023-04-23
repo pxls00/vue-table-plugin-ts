@@ -1,8 +1,14 @@
+// variables
+@import './variables.scss';
+
 // theme fonts
 @import './theme/fonts/index.scss';
 
 // theme colors
 @import './theme/colors/index';
+
+// helper ui
+@import './helpers/ui.scss';
 
 // typography
 @import './typography.scss';
@@ -10,5 +16,9 @@
 // normalize
 @import './normalize.scss';
 
+// parts
+@import './parts/index.scss';
+
 //components
 @import './components/index';
+
