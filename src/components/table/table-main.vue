@@ -10,10 +10,14 @@
             : !!maxWidth && typeof maxWidth === 'number'
               ? maxWidth
               : tableWidth + 'px',
+        'max-height': !!maxHeight ? `${maxHeight}px`: 'max-content'
       }"
     >
       <table class="table-content" :style="{ width: '0px' }">
-        <thead>
+        <thead
+          v-if="showHeader"
+          class="table-fixed-header"
+        >
           <tr
             v-for="rowItem in columnsRowGrouped"
             :key="rowItem"
@@ -21,7 +25,7 @@
             <th
               v-for="(column, index) in rowItem"
               :key="index"
-              :style="{ width: column.width + 'px' }"
+              :style="{ width: `${getWidthByKeyCols(column.key) || column.width}px`}"
               :colspan="column.colspan"
               :rowspan="column.rowspan"
             >
@@ -32,7 +36,7 @@
                     column.resizable !== false
                 "
                 class="resize-handle"
-                @mousedown="startResize(index)"
+                @mousedown="startResize(index, column.key)"
               />
             </th>
           </tr>
@@ -57,7 +61,7 @@
             </div>
           </template>
           <transition-group>
-            <tr v-for="(row, rowIndex) in myList" :key="rowIndex">
+            <tr v-for="(row, rowIndex) in myList" :key="rowIndex" :class="rowClass">
               <td v-for="(column, colIndex) in columnsRowSpreated" :key="colIndex">
                 <slot
                   :name="`cell(${column.key})`"
@@ -109,7 +113,7 @@ export default {
     maxWidth: {
       required: false,
       type: [Number, String],
-      default: 'auto',
+      default: 1000,
     },
     borderAround: {
       required: false,
@@ -126,6 +130,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    showHeader: {
+      required: false,
+      type: Boolean,
+      default: true
+    },
+    rowClass: {
+      required: false,
+      type: String,
+      default: ''
+    },
+    fixedHeader: {
+      required: false,
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -159,12 +178,13 @@ export default {
   },
   created () {
     this.setHeadColsSpread(this.columnsData)
+    this.setTableWidth()
+    this.setHeadColsWidth()
     this.setHeadColsGrouping(this.columnsData)
     document.addEventListener('mousemove', this.handleMouseMove)
     document.addEventListener('mouseup', this.stopResize)
   },
   mounted () {
-    this.setHeadColsWidth()
   },
   unmounted () {
     document.removeEventListener('mousemove', this.handleMouseMove)
@@ -174,37 +194,41 @@ export default {
     setHeadColsGrouping (data, index=null) {
       const indexColumnRow = index ? index : this.columnsRowGrouped.length
 
-      this.columnsRowGrouped[indexColumnRow] = []
+      if(!this.columnsRowGrouped[indexColumnRow] || !this.columnsRowGrouped[indexColumnRow].length) {
+        this.columnsRowGrouped[indexColumnRow] = []
+      } 
 
       data.forEach(item => {
-        this.columnsRowGrouped[indexColumnRow].push(item)
+        const _ = JSON.parse(JSON.stringify(item))
+
+        delete _.children
+        this.columnsRowGrouped[indexColumnRow].push(_)
 
         if(item.children) {
           this.setHeadColsGrouping(item.children, indexColumnRow + 1)
-          delete item.children
         }
       })
     },
 
     setHeadColsSpread (data) {
-      console.log(data)
       data.forEach(item => {
         if(item.children && item.children.length) {
           this.setHeadColsSpread(item.children)
-        }else {
+        }else if(!item.children) {
+          console.log(item)
           this.columnsRowSpreated.push(item)
         }
       })
     },
+
+    setTableWidth () {
+      this.tableWidth = this.maxWidth
+    },
     
-    setHeadColsWidth () {
-      const elementStyle = window.getComputedStyle(this.$refs.tableHead),
-        width = parseFloat(elementStyle.width)
-
-      this.tableWidth = width
+    setHeadColsWidth (data=this.columnsData, maxWidth=this.tableWidth) {
       const columnsWithoutWidth = []
-
-      this.columnsData.forEach((item) => {
+      
+      data.forEach((item) => {
         if (item.width < item.minWidth) {
           item.width = item.minWidth
         }
@@ -217,34 +241,49 @@ export default {
           const procentNumber = Number(item.width.replace('%', ''))
 
           console.log(procentNumber)
-          item.width = (this.tableWidth / 100) * procentNumber
+          item.width = (maxWidth / 100) * procentNumber
         } else if (typeof item.width === 'string' && item.width.includes('/')) {
           const procent =
             (100 / Number(item.width.split('/')[1])) *
             Number(item.width.split('/')[0])
 
-          item.width = (this.tableWidth / 100) * procent
+          item.width = (maxWidth / 100) * procent
         }
+
       })
 
-      let overWidth = this.tableWidth
+      let overWidth = maxWidth
 
       if (columnsWithoutWidth.length) {
-        this.columnsData.forEach((item) => {
+        data.forEach((item) => {
           if (item.width && typeof item.width === 'number') {
             overWidth -= item.width
           }
         })
-        console.log(overWidth)
 
         if (overWidth > 0) {
-          this.columnsData.forEach((item) => {
+          data.forEach((item) => {
             if (!item.width) {
               item.width = overWidth / columnsWithoutWidth.length
+            }
+    
+            if (item.children && item.children.length) {
+              this.setHeadColsWidth(item.children, item.width)
             }
           })
         }
       }
+
+    },
+
+    getWidthByKeyCols (key, data=this.columnsData) {
+      data.forEach(item => {
+        if(item.key === key) {
+          return item.width || null
+        } else if (item.children && item.children.length) {
+          return this.getWidthByKeyCols(key, item.children)
+        }
+      })
     },
 
     startResize (index) {
@@ -293,7 +332,7 @@ export default {
 <style lang="scss" scoped>
 .table {
   &-border-around {
-    border: 1px solid #eee;
+    border: 2px solid #eee;
   }
   &-border-x {
     td,
@@ -313,17 +352,16 @@ export default {
   }
   &-wrapper {
     position: relative;
-    overflow-y: auto;
+    overflow: auto;
     width: 100%;
     height: 100%;
     user-select: text;
   }
   &-content {
     min-width: 100%;
-    table-layout: fixed;
-    // border-collapse: separate;
+    table-layout: sticky;
+    border-collapse: separate;
     border-spacing: 0;
-    border-collapse: collapse;
     border-style: hidden;
     th {
       position: relative;
@@ -331,6 +369,14 @@ export default {
     td {
       overflow: hidden;
     }
+  }
+  &-fixed-header {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: white;
+    z-index: 4;
   }
 }
 .resize-handle {
