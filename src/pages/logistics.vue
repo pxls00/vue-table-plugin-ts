@@ -3,7 +3,6 @@
     :table-columns="columns"
     :table-data="rows"
     :max-height="200"
-    :max-width="800"
   >
     <template #cell(name)="{ value, item }">
       {{ value + 'test' }}
@@ -45,10 +44,9 @@ export default defineComponent({
         {
           label: 'Info',
           key: 'info',
-          width: 600,
           minWidth: 100,
           rowspan: 1,
-          colspan: 1,
+          colspan: 2,
           children: [
             {
               label: 'Info_a',
@@ -78,9 +76,8 @@ export default defineComponent({
           label: 'Created',
           key: 'date_created',
           width: 300,
-          minWidth: 50,
           rowspan: 1,
-          colspan: 3,
+          colspan: 4,
           children: [
             {
               label: 'Created_a',
