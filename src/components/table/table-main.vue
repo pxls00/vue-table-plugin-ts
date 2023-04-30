@@ -1,22 +1,20 @@
 <template>
   <div class="table-main">
     <div
-      ref="tableHead"
-      class="table-wrapper table-scrollbar table-border-around table-border-x table-border-y"
+      ref="table"
+      class="table-wrapper"
       :style="{
-        'max-width':
-          !!maxWidth && maxWidth !== 'auto'
-            ? maxWidth + 'px'
-            : !!maxWidth && typeof maxWidth === 'number'
-              ? maxWidth
-              : tableWidth + 'px',
+        'max-width': tableMaxWidthSize,
         'max-height': !!maxHeight ? `${maxHeight}px`: 'max-content'
       }"
     >
-      <table class="table-content" :style="{ width: '0px' }">
+      <table 
+        ref="tableMain"
+        class="table-content table-border-around table-border-x table-border-y"
+      >
         <thead
           v-if="showHeader"
-          class="table-fixed-header"
+          :class="{'table-fixed-header': fixedHeader}"
         >
           <tr
             v-for="rowItem in columnsRowGrouped"
@@ -113,7 +111,7 @@ export default {
     maxWidth: {
       required: false,
       type: [Number, String],
-      default: 1000,
+      default: '',
     },
     borderAround: {
       required: false,
@@ -141,6 +139,11 @@ export default {
       default: ''
     },
     fixedHeader: {
+      required: false,
+      type: Boolean,
+      default: false
+    },
+    resize: {
       required: false,
       type: Boolean,
       default: false
@@ -175,16 +178,35 @@ export default {
         ghostClass: 'ghost',
       }
     },
+
+    tableMaxWidthSize () {
+      if (this.maxWidth && typeof this.maxWidth === 'number') {
+        return `${this.maxWidth}px`
+      } else if (this.maxWidth && typeof this.maxWidth === 'string') {
+        return this.maxWidth
+      } else {
+        return `${this.tableMaxWidth}px`
+      }
+    },
+    
+    tableMaxWidth () {
+      if(this.maxWidth) {
+        return this.maxWidth
+      } else {
+        return this.tableWidth
+      }
+    }
+
   },
   created () {
-    this.setHeadColsSpread(this.columnsData)
-    this.setTableWidth()
-    this.setHeadColsWidth()
-    this.setHeadColsGrouping(this.columnsData)
     document.addEventListener('mousemove', this.handleMouseMove)
     document.addEventListener('mouseup', this.stopResize)
   },
   mounted () {
+    this.setTableWidth()
+    this.setHeadColsSpread(this.columnsData)
+    this.setHeadColsWidth(this.columnsData, this.tableWidth)
+    this.setHeadColsGrouping(this.columnsData)
   },
   unmounted () {
     document.removeEventListener('mousemove', this.handleMouseMove)
@@ -215,65 +237,88 @@ export default {
         if(item.children && item.children.length) {
           this.setHeadColsSpread(item.children)
         }else if(!item.children) {
-          console.log(item)
           this.columnsRowSpreated.push(item)
         }
       })
     },
 
     setTableWidth () {
-      this.tableWidth = this.maxWidth
+      const table = this.$refs.table
+
+      this.tableWidth = table.offsetWidth
     },
     
-    setHeadColsWidth (data=this.columnsData, maxWidth=this.tableWidth) {
+    setHeadColsWidth (data, maxWidth) {
+      console.log(data, maxWidth)
       const columnsWithoutWidth = []
-      
-      data.forEach((item) => {
-        if (item.width < item.minWidth) {
-          item.width = item.minWidth
-        }
-
-        if (!item.width) {
-          columnsWithoutWidth.push(item)
-        } else if (typeof item.width === 'string' && Number(item.width)) {
-          item.width = Number(item.width)
-        } else if (typeof item.width === 'string' && item.width.includes('%')) {
-          const procentNumber = Number(item.width.replace('%', ''))
-
-          console.log(procentNumber)
-          item.width = (maxWidth / 100) * procentNumber
-        } else if (typeof item.width === 'string' && item.width.includes('/')) {
-          const procent =
-            (100 / Number(item.width.split('/')[1])) *
-            Number(item.width.split('/')[0])
-
-          item.width = (maxWidth / 100) * procent
-        }
-
-      })
-
       let overWidth = maxWidth
+      
+      this.setHeadColsWidthIfTheyExists(data, columnsWithoutWidth, maxWidth)
 
       if (columnsWithoutWidth.length) {
-        data.forEach((item) => {
-          if (item.width && typeof item.width === 'number') {
-            overWidth -= item.width
-          }
-        })
+        this.setHeadColsWidthIfTheyNotExists(data, overWidth, columnsWithoutWidth)
+      }
+    },
 
-        if (overWidth > 0) {
-          data.forEach((item) => {
-            if (!item.width) {
-              item.width = overWidth / columnsWithoutWidth.length
-            }
-    
-            if (item.children && item.children.length) {
-              this.setHeadColsWidth(item.children, item.width)
-            }
-          })
+    getHeadColWidth (width, minWidth, maxWidth) {
+      console.log(maxWidth)
+
+      if(typeof width === 'string') {
+        if (Number(width)) {
+          return this.getHeadColWidth(Number(width), Number(minWidth))
+        } else if (width.includes('%')) {
+          const percentNumber = Number(width.replace('%', ''))
+          console.log(percentNumber, maxWidth)
+          const colWidthNumber = (maxWidth / 100) * percentNumber
+                    
+          return this.getHeadColWidth(Number(colWidthNumber), minWidth, maxWidth)
+        } else if (width.includes('/')) {
+          const percentNumber =
+            (100 / Number(width.split('/')[1])) *
+            Number(width.split('/')[0])
+          const colWidthNumber = (maxWidth / 100) * percentNumber
+      
+          return this.getHeadColWidth(Number(colWidthNumber), minWidth, maxWidth)
+        }
+      } else {
+        
+        if(width < Number(minWidth)) {
+          return minWidth
+        } else {
+          return width
         }
       }
+    },
 
+    setHeadColsWidthIfTheyExists (data, columnsWithoutWidth, maxWidth) {
+      data.forEach((item) => {
+        if(!item.width) {
+          columnsWithoutWidth.push(item)
+        } else {
+          item.width = this.getHeadColWidth(item.width, item.minWidth, maxWidth)
+        }
+      })
+    },
+
+    setHeadColsWidthIfTheyNotExists (data, overWidth, columnsWithoutWidth) {
+      data.forEach((item) => {
+        if (item.width && typeof item.width === 'number') {
+          overWidth -= item.width
+        }
+      })
+
+      if (overWidth > 0) {
+        data.forEach((item) => {
+          if (!item.width) {
+            item.width = overWidth / columnsWithoutWidth.length
+          } 
+          
+          if (item.children && item.children.length) {
+            console.log(item.children, item.width)
+            this.setHeadColsWidth(item.children, item.width)
+          }
+        })
+      }
     },
 
     getWidthByKeyCols (key, data=this.columnsData) {
@@ -330,24 +375,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+table thead th,
+table tbody td {
+  border: .5px solid #000000;
+}
+table thead tr:first-child th:first-child {
+  border-left: none;
+}
+
+table thead tr:first-child th:first-child,
+table td:first-child {
+  border-left: none;
+}
+
+table td:last-child,
+table th:last-child {
+  border-right: none;
+}
 .table {
-  &-border-around {
-    border: 2px solid #eee;
-  }
   &-border-x {
     td,
     th {
       padding: 1rem;
-      border-bottom: 1px solid black;
-      border-top: 1px solid black;
     }
   }
   &-border-x {
     td,
     th {
       padding: 1rem;
-      border-right: 1px solid black;
-      border-left: 1px solid black;
     }
   }
   &-wrapper {
@@ -358,11 +413,10 @@ export default {
     user-select: text;
   }
   &-content {
-    min-width: 100%;
-    table-layout: sticky;
     border-collapse: separate;
     border-spacing: 0;
     border-style: hidden;
+    width: max-content;
     th {
       position: relative;
     }
