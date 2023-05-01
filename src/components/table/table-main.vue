@@ -2,22 +2,23 @@
   <div class="table-main">
     <div
       ref="table"
-      class="table-wrapper"
+      class="table__wrapper table--theme-dark table--theme-border-x table--theme-border-y table--theme-stripe"
       :style="{
         'max-width': tableMaxWidthSize,
       }"
     >
       <table 
         ref="tableMain"
-        class="table-content table-border-around table-border-x table-border-y"
+        class="table__content"
       >
         <thead
           v-if="showHeader && hasChildren"
-          :class="{'table-fixed-header': fixedHeader}"
+          :class="['table__head', {'table__head-fixed': fixedHeader}]"
         >
           <tr
             v-for="rowItem in tableColumnDataHead"
             :key="rowItem"
+            :class="['table__head-row table__row', Array.isArray(rowItem.class) ? rowItem.class.join(' ') : rowItem.class]"
           >
             <th
               v-for="(column, index) in rowItem"
@@ -25,35 +26,49 @@
               :style="{ width: `${getWidthByKeyCols(column.key) || column.width}px`}"
               :colspan="column.colspan"
               :rowspan="column.rowspan"
+              :class="['table__head-col', Array.isArray(column.class) ? column.class.join(' ') : column.class]"
             >
-              {{ column.label }}
+              <slot
+                :name="`cell-head(${column.key})`"
+                :value="column.lable"
+                :item="column"
+              >
+                {{ column.label }}
+              </slot>
             </th>
           </tr>
         </thead>
         <thead
           v-else-if="showHeader && !hasChildren"
-          :class="{'table-fixed-header': fixedHeader}"
+          :class="['table__head', {'table__head-fixed': fixedHeader}]"
         >
           <th
             v-for="(column, index) in tableColumnDataHead"
             :key="index"
             :style="{ width: `${getWidthByKeyCols(column.key) || column.width}px`}"
             :colspan="column.colspan"
+            :class="['table__head-col', Array.isArray(column.class) ? column.class.join(' ') : column.class]"
           >
-            {{ column.label }}
-            <span
-              v-if="
-                index !== columnsData.length - 1 &&
-                  column.resizable !== false && resize
-              "
-              class="resize-handle"
-              @mousedown="startResize(index, column.key)"
-            />
+            <slot
+              :name="`cell-head(${column.key})`"
+              :value="column.lable"
+              :item="column"
+            >
+              {{ column.label }}
+              <span
+                v-if="
+                  index !== columnsData.length - 1 &&
+                    column.resizable !== false && resize
+                "
+                class="resize-handle table__head-col-resize"
+                @mousedown="startResize(index, column.key)"
+              />
+            </slot>
           </th>
         </thead>
         <draggable
           v-model="myList"
-          class="dragArea list-group w-full"
+          class="dragArea list-group w-full table__body"
           tag="tbody"
           v-bind="dragOptions"
           handle=".handle"
@@ -64,15 +79,23 @@
         >
           <template #item="{ element }">
             <div
-              class="list-group-item"
+              class="list-group-item table__drag-future"
               :class="{ 'not-draggable': !enabled }"
             >
               {{ element.name }}
             </div>
           </template>
           <transition-group>
-            <tr v-for="(row, rowIndex) in myList" :key="rowIndex" :class="rowClass">
-              <td v-for="(column, colIndex) in tableColumnDataBody" :key="colIndex">
+            <tr 
+              v-for="(row, rowIndex) in myList"
+              :key="rowIndex" 
+              :class="['table__body-row', rowClass]"
+            >
+              <td 
+                v-for="(column, colIndex) in tableColumnDataBody"
+                :key="colIndex"
+                :class="['table__body-data', Array.isArray(row[column.key].class) ? row[column.key].class.join(' ') : row[column.key].class]"
+              >
                 <slot
                   :name="`cell(${column.key})`"
                   :value="row[column.key]"
@@ -114,11 +137,6 @@ export default {
       type: Array,
       required: true,
       default: () => [],
-    },
-    maxHeight: {
-      required: false,
-      type: [Number, String],
-      default: '',
     },
     maxWidth: {
       required: false,
@@ -410,34 +428,18 @@ export default {
 .table {
   &-main {
     padding: 40px;
+    background: aqua;
   }
-  &-border-x {
-    td,
-    th {
-      padding: 1rem;
-      border: 1px solid black;
-    }
-  }
-  &-border-y {
-    td,
-    th {
-      padding: 1rem;
-      border: 1px solid black;
-    }
-  }
-  &-wrapper {
+
+  &__wrapper {
     position: relative;
     overflow: auto;
     width: 100%;
     height: 100%;
     user-select: text;
-    // border: 1px solid black;
-    border-left: none;
-    border-right: none;
     &::-webkit-scrollbar {
       width: 10px;
       height: 10px;
-      position: absolute;
     }
 
     /* Track */
@@ -454,20 +456,113 @@ export default {
     &::-webkit-scrollbar-thumb:hover {
       background: #555; 
     }
+
+    table {
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+    }
   }
-  &-content {
+  
+  &__content {
     border-collapse: separate;
     border-spacing: 0;
     border-style: hidden;
     width: max-content;
-    th {
+    th, td {
       position: relative;
-    }
-    td {
+      white-space: pre-wrap;
+      text-overflow: ellipsis;
       overflow: hidden;
     }
   }
-  &-fixed-header {
+
+  &__head {
+    &-row {}
+    &-col {
+      padding: 1rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+  }
+
+  &--theme {
+    &-light {
+      table {
+        background: white;
+        td, th {
+          color: black
+        }
+      }
+    }
+    &-light.table--theme-border-x {
+      table {
+        border-bottom: 1px solid #c0c0c0;
+        td, th {
+          border-top: 1px solid #c0c0c0;
+        }
+      }
+    }
+    &-light.table--theme-border-y {
+      table {
+        border-left: 1px solid #c0c0c0;
+        td, th {
+          border-right: 1px solid #c0c0c0;
+        }
+      }
+    }
+    &-light.table--theme-stripe {
+      .table__content .table__body .table__body-row {
+        &:nth-child(odd) {
+          background: #f2f2f2;
+        }
+        &:hover {
+          background: #ececec;
+        }
+      }
+    }
+    &-dark {
+      table {
+        background: rgb(10, 10, 10);
+        td, th {
+          color: white
+        }
+      }
+    }
+    &-dark.table--theme-border-x {
+      table {
+        border-bottom: 1px solid #000000;
+        td, th {
+          border-top: 1px solid #000000;
+        }
+      }
+    }
+    &-dark.table--theme-border-y {
+      table {
+        border-left: 1px solid #000000;
+        td, th {
+          border-right: 1px solid #000000;
+        }
+      }
+    }
+    &-dark.table--theme-stripe {
+      .table__content .table__body .table__body-row {
+        background: #1f1f1f;
+        &:hover {
+          background: #131313;
+        }
+      }
+    }
+  }
+
+  &__body {
+    &-data {
+      padding: .8rem 1rem;
+      font-size: 1.4rem;
+    }
+  }
+  &__head--fixed {
     position: sticky;
     top: 0;
     right: 0;
@@ -485,24 +580,20 @@ export default {
   cursor: col-resize;
 }
 
-table thead tr:first-child th:first-child, table thead th:first-child {
-  border-left: none;
-}
+// table thead tr:first-child th {
+//   border-top: none;
+// }
 
-table thead tr:first-child th {
-  border-top: none;
-}
+// table tbody tr:last-child td {
+//   border-bottom: none;
+// }
 
-table tbody tr:last-child td {
-  border-bottom: none;
-}
+// table td:first-child {
+//   border-left: none;
+// }
 
-table td:first-child {
-  border-left: none;
-}
-
-table td:last-child,
-table th:last-child {
-  border-right: none;
-}
+// table td:last-child,
+// table th:last-child {
+//   border-right: none;
+// }
 </style>
