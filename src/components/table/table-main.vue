@@ -5,7 +5,6 @@
       class="table-wrapper"
       :style="{
         'max-width': tableMaxWidthSize,
-        'max-height': !!maxHeight ? `${maxHeight}px`: 'max-content'
       }"
     >
       <table 
@@ -13,11 +12,11 @@
         class="table-content table-border-around table-border-x table-border-y"
       >
         <thead
-          v-if="showHeader"
+          v-if="showHeader && hasChildren"
           :class="{'table-fixed-header': fixedHeader}"
         >
           <tr
-            v-for="rowItem in columnsRowGrouped"
+            v-for="rowItem in tableColumnDataHead"
             :key="rowItem"
           >
             <th
@@ -28,16 +27,29 @@
               :rowspan="column.rowspan"
             >
               {{ column.label }}
-              <span
-                v-if="
-                  index !== columnsData.length - 1 &&
-                    column.resizable !== false
-                "
-                class="resize-handle"
-                @mousedown="startResize(index, column.key)"
-              />
             </th>
           </tr>
+        </thead>
+        <thead
+          v-else-if="showHeader && !hasChildren"
+          :class="{'table-fixed-header': fixedHeader}"
+        >
+          <th
+            v-for="(column, index) in tableColumnDataHead"
+            :key="index"
+            :style="{ width: `${getWidthByKeyCols(column.key) || column.width}px`}"
+            :colspan="column.colspan"
+          >
+            {{ column.label }}
+            <span
+              v-if="
+                index !== columnsData.length - 1 &&
+                  column.resizable !== false && resize
+              "
+              class="resize-handle"
+              @mousedown="startResize(index, column.key)"
+            />
+          </th>
         </thead>
         <draggable
           v-model="myList"
@@ -60,7 +72,7 @@
           </template>
           <transition-group>
             <tr v-for="(row, rowIndex) in myList" :key="rowIndex" :class="rowClass">
-              <td v-for="(column, colIndex) in columnsRowSpreated" :key="colIndex">
+              <td v-for="(column, colIndex) in tableColumnDataBody" :key="colIndex">
                 <slot
                   :name="`cell(${column.key})`"
                   :value="row[column.key]"
@@ -106,7 +118,7 @@ export default {
     maxHeight: {
       required: false,
       type: [Number, String],
-      default: 'auto',
+      default: '',
     },
     maxWidth: {
       required: false,
@@ -146,7 +158,7 @@ export default {
     resize: {
       required: false,
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data () {
@@ -157,6 +169,7 @@ export default {
       columnsData: this.tableColumns,
       rowsData: this.tableData,
       tableWidth: null,
+      tableHeight: null,
       columnsRowGrouped: [],
       columnsRowSpreated: []
     }
@@ -195,6 +208,26 @@ export default {
       } else {
         return this.tableWidth
       }
+    },
+
+    hasChildren () {
+      return this.columnsData.some(item => item.children && item.children.length)
+    },
+
+    tableColumnDataHead () {
+      if(this.hasChildren) {
+        return this.columnsRowGrouped
+      }else {
+        return this.columnsData
+      }
+    },
+
+    tableColumnDataBody () {
+      if(this.hasChildren) {
+        return this.columnsRowSpreated
+      } else {
+        return this.columnsData
+      }
     }
 
   },
@@ -204,9 +237,12 @@ export default {
   },
   mounted () {
     this.setTableWidth()
-    this.setHeadColsSpread(this.columnsData)
     this.setHeadColsWidth(this.columnsData, this.tableWidth)
-    this.setHeadColsGrouping(this.columnsData)
+
+    if(this.hasChildren) {
+      this.setHeadColsSpread(this.columnsData)
+      this.setHeadColsGrouping(this.columnsData)
+    }
   },
   unmounted () {
     document.removeEventListener('mousemove', this.handleMouseMove)
@@ -226,7 +262,7 @@ export default {
         delete _.children
         this.columnsRowGrouped[indexColumnRow].push(_)
 
-        if(item.children) {
+        if(item.children && item.children.length) {
           this.setHeadColsGrouping(item.children, indexColumnRow + 1)
         }
       })
@@ -249,7 +285,6 @@ export default {
     },
     
     setHeadColsWidth (data, maxWidth) {
-      console.log(data, maxWidth)
       const columnsWithoutWidth = []
       let overWidth = maxWidth
       
@@ -261,14 +296,12 @@ export default {
     },
 
     getHeadColWidth (width, minWidth, maxWidth) {
-      console.log(maxWidth)
 
       if(typeof width === 'string') {
         if (Number(width)) {
           return this.getHeadColWidth(Number(width), Number(minWidth))
         } else if (width.includes('%')) {
           const percentNumber = Number(width.replace('%', ''))
-          console.log(percentNumber, maxWidth)
           const colWidthNumber = (maxWidth / 100) * percentNumber
                     
           return this.getHeadColWidth(Number(colWidthNumber), minWidth, maxWidth)
@@ -306,15 +339,14 @@ export default {
           overWidth -= item.width
         }
       })
-
+      
       if (overWidth > 0) {
         data.forEach((item) => {
           if (!item.width) {
-            item.width = overWidth / columnsWithoutWidth.length
+            item.width = (overWidth - 10) / columnsWithoutWidth.length
           } 
           
           if (item.children && item.children.length) {
-            console.log(item.children, item.width)
             this.setHeadColsWidth(item.children, item.width)
           }
         })
@@ -375,34 +407,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-table thead th,
-table tbody td {
-  border: .5px solid #000000;
-}
-table thead tr:first-child th:first-child {
-  border-left: none;
-}
-
-table thead tr:first-child th:first-child,
-table td:first-child {
-  border-left: none;
-}
-
-table td:last-child,
-table th:last-child {
-  border-right: none;
-}
 .table {
-  &-border-x {
-    td,
-    th {
-      padding: 1rem;
-    }
+  &-main {
+    padding: 40px;
   }
   &-border-x {
     td,
     th {
       padding: 1rem;
+      border: 1px solid black;
+    }
+  }
+  &-border-y {
+    td,
+    th {
+      padding: 1rem;
+      border: 1px solid black;
     }
   }
   &-wrapper {
@@ -411,6 +431,29 @@ table th:last-child {
     width: 100%;
     height: 100%;
     user-select: text;
+    // border: 1px solid black;
+    border-left: none;
+    border-right: none;
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      position: absolute;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888; 
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555; 
+    }
   }
   &-content {
     border-collapse: separate;
@@ -440,5 +483,26 @@ table th:last-child {
   width: 10px;
   height: 100%;
   cursor: col-resize;
+}
+
+table thead tr:first-child th:first-child, table thead th:first-child {
+  border-left: none;
+}
+
+table thead tr:first-child th {
+  border-top: none;
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+table td:first-child {
+  border-left: none;
+}
+
+table td:last-child,
+table th:last-child {
+  border-right: none;
 }
 </style>
