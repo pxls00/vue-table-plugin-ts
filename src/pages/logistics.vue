@@ -2,9 +2,8 @@
   <TableMain
     :table-columns="columns"
     :table-data="rows"
-    :max-height="200"
   >
-    <template #cell(name)="{ value, item }">
+    <template #cell(fukkname)="{ value, item }">
       {{ value + 'test' }}
     </template>
     <template #cell(actions)>
@@ -30,147 +29,25 @@ export default defineComponent({
           key: 'actions',
           width: 50,
           minWidth: 30,
-          rowspan: 4,
-          colspan: 1,
         },
         {
           label: 'ID',
           key: 'id',
           width: 50,
           minWidth: 50,
-          rowspan: 4,
-          colspan: 1,
         },
         {
           label: 'Info',
           key: 'info',
           minWidth: 100,
-          rowspan: 1,
-          colspan: 5,
-          children: [
-            {
-              label: 'Info_a',
-              key: 'info_a',
-              width: '3/4',
-              minWidth: 50,
-              rowspan: 1,
-              colspan: 3,
-              children: [
-                {
-                  label: 'Info_a_1',
-                  key: 'info_a_1',
-                  width: 100,
-                  minWidth: 20,
-                  rowspan: 2,
-                  colspan: 1
-                },
-                {
-                  label: 'Info_a_2',
-                  key: 'info_a_2',
-                  minWidth: 20,
-                  rowspan: 1,
-                  colspan: 2,
-                  children: [
-                    {
-                      label: 'Info_a_2_1',
-                      key: 'info_a_2_1',
-                      minWidth: 20,
-                      rowspan: 1,
-                      colspan: 1
-                    },
-                    {
-                      label: 'Info_a_2_2',
-                      key: 'info_a_2_2',
-                      minWidth: 20,
-                      rowspan: 1,
-                      colspan: 1
-                    },
-                  ]
-                },
-              ]
-            },
-            {
-              label: 'Info_b',
-              key: 'info_b',
-              minWidth: 50,
-              rowspan: 1,
-              colspan: 2,
-              children: [
-                {
-                  label: 'Info_b_1',
-                  key: 'info_b_1',
-                  minWidth: 20,
-                  rowspan: 2,
-                  colspan: 1
-                },
-                {
-                  label: 'Info_b_2',
-                  key: 'info_b_2',
-                  minWidth: 20,
-                  rowspan: 2,
-                  colspan: 1
-                },
-              ]
-            },
-          ],
         },
         {
           label: 'Full Name',
           key: 'full_name',
           width: 200,
           minWidth: 50,
-          rowspan: 4,
-          colspan: 1,
         },
-        {
-          label: 'Created',
-          key: 'date_created',
-          width: 300,
-          rowspan: 1,
-          colspan: 4,
-          children: [
-            {
-              label: 'Created_a',
-              key: 'date_created_a',
-              width: 100,
-              minWidth: 50,
-              rowspan: 3,
-              colspan: 1,
-            },
-            {
-              label: 'Created_b',
-              key: 'date_created_b',
-              width: 100,
-              minWidth: 50,
-              rowspan: 3,
-              colspan: 1,
-            },
-            {
-              label: 'Created_c',
-              key: 'date_created_c',
-              width: 100,
-              minWidth: 50,
-              rowspan: 1,
-              colspan: 2,
-              children: [
-                {
-                  label: 'Created_c1',
-                  key: 'date_created_c1',
-                  width: 50,
-                  minWidth: 20,
-                  rowspan: 2,
-                  colspan: 1,
-                },
-                {
-                  label: 'Created_c2',
-                  key: 'date_created_c2',
-                  rowspan: 2,
-                  colspan: 1,
-                },
-              ],
-            },
-          ],
-        },
+        
       ],
 
       rows: [
@@ -214,7 +91,7 @@ export default defineComponent({
           date_created_c: '04',
           date_created_c1: '05',
           date_created_c2: '04',
-        },
+        }
       ],
     }
   },
