@@ -2,6 +2,7 @@
   <TableMain
     :table-columns="columns"
     :table-data="rows"
+    :fixed-header="true"
   >
     <template #cell(fukkname)="{ value, item }">
       {{ value + 'test' }}
@@ -39,7 +40,7 @@ export default defineComponent({
         {
           label: 'Info',
           key: 'info',
-          minWidth: 100,
+          minWidth: 20,
         },
         {
           label: 'Full Name',
@@ -84,7 +85,7 @@ export default defineComponent({
         {
           id: 4,
           name_a: 'dog',
-          full_name: 'DOG_FULL_BAR',
+          info: 'DOG_FULL_BAR_DOG_FULL_BAR_DOG_FULL_BAR',
           date_created: 'date_created',
           date_created_a: '04',
           date_created_b: '04',
