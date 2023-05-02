@@ -8,7 +8,7 @@
       {{ value + 'test' }}
     </template>
     <template #cell(actions)>
-      <span class="handle">|||</span>
+      <span class="drag-btn">|||</span>
     </template>
   </TableMain>
 </template>
