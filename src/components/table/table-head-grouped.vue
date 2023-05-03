@@ -3,21 +3,21 @@
     :class="['table__head', { 'table__head-fixed': fixedHeader }]"
   >
     <tr
-      v-for="rowItem in tableHeadData"
+      v-for="rowItem in props.tableHeadData"
       :key="rowItem"
       class="table__head-row table__row"
     >
       <th
         v-for="(column, index) in rowItem"
         :key="index"
-        :style="{ width: `${getWidthByKeyCols(column.key) || column.width}px` }"
+        :style="{ width: `${getWidthByKeyCols(column.key, props.columnsData) || column.width}px` }"
         :colspan="column.colspan"
         :rowspan="column.rowspan"
         :class="['table__head-col', getClassOfCol(column)]"
       >
         <slot
           :name="`cell-head(${column.key})`"
-          :value="column.lable"
+          :value="column.label"
           :item="column"
         >
           {{ column.label }}
@@ -27,52 +27,28 @@
   </thead>
 </template>
 
-<script>
-export default {
-  name: 'TableHeadGroupedComponent',
-  props: {
-    fixedHeader: {
-      required: false,
-      type: Boolean,
-      default: false
-    },
-    resize: {
-      required: false,
-      type: Boolean,
-      default: true
-    },
-    tableHeadData: {
-      required: true,
-      type: Array
-    },
-    columnsData: {
-      required: true,
-      type: Array
-    }
-  },
-  emits: ['startResize'],
-  methods: {
-    getWidthByKeyCols (key, data=this.columnsData) {
-      data.forEach(item => {
-        if(item.key === key) {
-          return item.width || null
-        } else if (item.children && item.children.length) {
-          return this.getWidthByKeyCols(key, item.children)
-        }
-      })
-    },
+<script lang="ts">
+import {defineComponent} from 'vue'
 
-    getClassOfCol (item) {
-      if(item.hasOwnProperty('class')) {
-        if(Array.isArray(item.class)) {
-          return item.class.join(' ')
-        }
-        
-        return item.class
-      } 
+export default defineComponent({
+  name: 'TableHeadGroupedComponent'
+})
+</script>
 
-      return ''
-    },
-  }
+<script lang="ts" setup>
+import getClassOfCol from '@/helpers/get-class-of-col'
+import getWidthByKeyCols from '@/helpers/get-width-by-key-cols'
+
+
+import type ITableHeadColumnItem from '@/interfaces/table/column-item'
+import type ColumnGroupedRow from '@/types/table/column-grouped-row'
+
+interface IProps {
+  fixedHeader: boolean,
+  tableHeadData: ColumnGroupedRow[],
+  columnsData: ITableHeadColumnItem[]
 }
+
+const props = defineProps<IProps>()
+
 </script>

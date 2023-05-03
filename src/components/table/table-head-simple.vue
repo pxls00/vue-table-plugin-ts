@@ -1,17 +1,16 @@
 <template>
   <thead
-    :class="['table__head', { 'table__head-fixed': fixedHeader }]"
+    :class="['table__head', { 'table__head-fixed': props.fixedHeader }]"
   >
     <th
-      v-for="(column, index) in columnsData"
+      v-for="(column, index) in props.columnsData"
       :key="index"
       :style="{ width: `${column.width}px` }"
-      :colspan="column.colspan"
       :class="['table__head-col', getClassOfCol(column)]"
     >
       <slot
         :name="`cell-head(${column.key})`"
-        :value="column.lable"
+        :value="column.label"
         :item="column"
       >
         {{ column.label }}
@@ -25,50 +24,46 @@
   </thead>
 </template>
 
-<script>
-export default {
-  name: 'TableHeadSimpleComponent',
-  props: {
-    fixedHeader: {
-      required: false,
-      type: Boolean,
-      default: false
-    },
-    resize: {
-      required: false,
-      type: Boolean,
-      default: true
-    },
-    columnsData: {
-      required: true,
-      type: Array
-    }
-  },
-  emits: ['startResize'],
-  methods: {
-    getClassOfCol (item) {
-      if(item.hasOwnProperty('class')) {
-        if(Array.isArray(item.class)) {
-          return item.class.join(' ')
-        }
-        
-        return item.class
-      } 
+<script lang="ts">
+import {defineComponent} from 'vue'
 
-      return ''
-    },
 
-    startResize (index, key) {
-      this.$emit('startResize', {index, key})
-    },
+export default defineComponent({
+  name: 'TableHeadSimpleComponent'
+})
+</script>
 
-    isCanResizeCol (index, column) {
-      if(index !== this.columnsData.length - 1 && column.resizable !== false && this.resize) {        
-        return true
-      }
-     
-      return false
-    }
-  }
+<script lang="ts" setup>
+import getClassOfCol from '@/helpers/get-class-of-col'
+
+import type ITableHeadColumnItem from '@/interfaces/table/column-item'
+
+interface IProps {
+  fixedHeader: boolean,
+  resize: boolean,
+  columnsData: ITableHeadColumnItem[]
 }
+
+interface IResizeData {
+  index: number,
+  key: string
+}
+
+const props = defineProps<IProps>()
+const emits = defineEmits<{
+  (e: 'startResize', data: IResizeData): IResizeData
+}>()
+
+function startResize (index:number, key:string):void {
+  emits('startResize', {index, key})
+}
+
+function isCanResizeCol (index: number, column: ITableHeadColumnItem):boolean {
+  if(index !== props.columnsData.length - 1 && column.resizable !== false && props.resize) {        
+    return true
+  }
+  
+  return false
+}
+
 </script>

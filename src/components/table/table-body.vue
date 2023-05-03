@@ -1,19 +1,15 @@
 <template>
-  <draggable
+  <VueDraggableNext
     v-model="myList"
     class="dragArea list-group w-full table__body"
     tag="tbody"
     v-bind="dragOptions"
     handle=".drag-btn"
-    :move="checkMove"
-    @start="drag = true"
-    @end="drag = false"
     @change="log"
   >
     <template #item="{ element }">
       <div
         class="list-group-item table__drag-future"
-        :class="{ 'not-draggable': !enabled }"
       >
         {{ element.name }}
       </div>
@@ -22,7 +18,7 @@
       <tr
         v-for="(row, rowIndex) in myList"
         :key="rowIndex"
-        :class="['table__body-row', rowClass]"
+        :class="['table__body-row']"
       >
         <td
           v-for="(column, colIndex) in tableColumnData"
@@ -42,80 +38,52 @@
         </td>
       </tr>
     </transition-group>
-  </draggable>
+  </VueDraggableNext>
 </template>
 
-<script>
-import { VueDraggableNext } from 'vue-draggable-next'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
+export default defineComponent({
+  name: 'TableBodyComponent' 
+})
+</script>
 
-export default {
-  name: 'TableBodyComponent',
+<script lang="ts" setup>
+import {ref, computed} from 'vue'
 
-  components: {
-    draggable: VueDraggableNext
-  },
+import { VueDraggableNext} from 'vue-draggable-next'
+import getClassOfCol from '@/helpers/get-class-of-col'
 
-  props: {
-    bodyData: {
-      type: Array,
-      required: true
-    },
-    tableColumnData: {
-      type: Array,
-      required: true
-    },
-    rowClass: {
-      required: false,
-      type: String,
-      default: ''
-    },
-  },
+import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 
-  data () {
-    return {
-      rowsData: this.bodyData
-    }
-  },
-
-  computed: {
-    dragOptions () {
-      return {
-        animation: 200,
-        group: 'description',
-        disabled: false,
-        ghostClass: 'ghost',
-      }
-    },
-    myList: {
-      get () {
-        return this.rowsData
-      },
-      set (value) {
-        this.rowsData = value
-      },
-    },
-  },
-  methods: {
-    checkMove: function (e) {
-      window.console.log('Future index: ' + e.draggedContext.futureIndex)
-    },
-
-    log (event) {
-      console.log(event)
-    },
-
-    getClassOfCol (item) {
-      if(item.hasOwnProperty('class')) {
-        if(Array.isArray(item.class)) {
-          return item.class.join(' ')
-        }
-        
-        return item.class
-      } 
-
-      return ''
-    },
-  }
+interface IProps {
+  bodyData: any[],
+  tableColumnData: ITableHeadColumnItem[],
 }
+
+const props = defineProps<IProps>()
+
+const rowsData = ref<any[]>(props.bodyData)
+
+const dragOptions = ref<Object>({
+  animation: 200,
+  group: 'description',
+  disabled: false,
+  ghostClass: 'ghost',
+})
+
+const myList = computed<any[]>({
+  get () {
+    return rowsData.value
+  },
+  set (value: any[]) {
+    rowsData.value = value
+  },
+})
+
+function log (event: Event): void {
+  console.log(event)
+}
+
 </script>
