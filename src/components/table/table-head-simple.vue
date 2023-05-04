@@ -37,6 +37,7 @@ export default defineComponent({
 import getClassOfCol from '@/helpers/get-class-of-col'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
+import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
 
 interface IProps {
   fixedHeader: boolean,
@@ -44,14 +45,9 @@ interface IProps {
   columnsData: ITableHeadColumnItem[]
 }
 
-interface IResizeData {
-  index: number,
-  key: string
-}
-
 const props = defineProps<IProps>()
 const emits = defineEmits<{
-  (e: 'startResize', data: IResizeData): IResizeData
+  (e: 'startResize', data: IResizerDataEmit): IResizerDataEmit
 }>()
 
 function startResize (index:number, key:string):void {
