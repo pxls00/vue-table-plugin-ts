@@ -50,7 +50,7 @@ module.exports = {
     'space-in-parens': ['error', 'never'],
     'array-bracket-spacing': ['error', 'never'],
     // 'comma-dangle': ['error', 'never'],
-    'max-params': ['error', 3],
+    'max-params': ['error', 4],
     'padding-line-between-statements': [
       'error',
       {

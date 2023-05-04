@@ -60,11 +60,13 @@ import { withDefaults, ref, computed, onMounted, onUnmounted } from 'vue'
 import TableHeadGroupedComponent from '@/components/table/table-head-grouped.vue'
 import TableHeadSimpleComponent from '@/components/table/table-head-simple.vue'
 import TableBodyComponent from '@/components/table/table-body.vue'
-import GenerateHeadColWidths from '@/helpers/generate-head-col-widths'
+import GenerateHeadColWidths from '@/helpers/get-head-col-width'
+import MouseMoveResizer from '@/helpers/mouse-move-resizer'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type ColumnItemGroupedRowItem from '@/types/table/column-grouped-row'
 import type ColumnItemWidthType from '@/types/table/column-item-width'
+import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
 
 interface IProps {
   tableColumns: ITableHeadColumnItem[],
@@ -78,11 +80,6 @@ interface IProps {
   resize?: boolean
 }
 
-interface IResizeData {
-  index: number,
-  key: string
-}
-
 const props = withDefaults(defineProps<IProps>(), {
   maxWidth: '',
   borderAround: false,
@@ -93,10 +90,7 @@ const props = withDefaults(defineProps<IProps>(), {
   resize: true
 })
 
-const resizing = ref<boolean>(false),
-  resizeIndex = ref<number>(0),
-  startX = ref<number>(0),
-  columnsData = ref<ITableHeadColumnItem[]>(props.tableColumns),
+const columnsData = ref<ITableHeadColumnItem[]>(props.tableColumns),
   tableWidth = ref<number>(),
   columnsRowGrouped = ref<ColumnItemGroupedRowItem[]>([]),
   columnsRowSpreated = ref<ITableHeadColumnItem[]>([]),
@@ -145,58 +139,37 @@ function setTableWidth () {
   tableWidth.value = tableMainDiv.value?.offsetWidth as number
 }
 
-function startResize ({index}: IResizeData) {
-  const eventTarget = event as Event
-
-  resizing.value = true
-  resizeIndex.value = index
-  startX.value = eventTarget.pageX
+function startResize ({index, key}: IResizerDataEmit) {
+  moveResizer.startResize({index, key})
 }
 
-function stopResize () {
-  resizing.value = false
-  resizeIndex.value = 0
-  startX.value = 0
-}
+const moveResizer = new MouseMoveResizer(columnsData.value)
 
-function handleMouseMove (event: Event) {
-  if (resizing.value) {
-    const deltaX:number = event.pageX - startX.value
-    const currentColumn: ITableHeadColumnItem= columnsData.value[resizeIndex.value]
-    const currentParallelColumn = columnsData.value[resizeIndex.value + 1]
-    const newColumnWidth: number = currentColumn.width as number + deltaX
-    const newParralelColumnWidth = currentParallelColumn.width as number + deltaX * -1
-
-    if (
-      newColumnWidth >= currentColumn.minWidth &&
-      newParralelColumnWidth >= currentParallelColumn.minWidth
-    ) {
-      currentColumn.width = newColumnWidth
-      currentParallelColumn.width = newParralelColumnWidth
-    }
-    startX.value = event.pageX
-  }
-}
-
-document.addEventListener('mousemove', handleMouseMove)
-document.addEventListener('mouseup', stopResize)
+document.addEventListener('mousemove', (event) => moveResizer.handleMouseMove(event))
+document.addEventListener('mouseup', (event) => moveResizer.stopResize())
 
 onMounted(() => {
   setTableWidth()
-  const generateWidth = new GenerateHeadColWidths(tableWidth.value as number)
 
-  generateWidth.setHeadColsWidth(columnsData.value, tableWidth.value as number)
+  const generateWidth = new GenerateHeadColWidths(
+    tableWidth.value as number,
+    columnsData.value as ITableHeadColumnItem[],
+    columnsRowSpreated.value as ITableHeadColumnItem[],
+    columnsRowGrouped.value as ColumnItemGroupedRowItem[]
+  )
+
+  generateWidth.setHeadColsWidth()
 
   if(hasChildren.value) {
-    generateWidth.setHeadColsSpread(columnsData.value, columnsRowSpreated.value)
-    generateWidth.setHeadColsGrouping(columnsData.value, 0, columnsRowGrouped.value)
+    generateWidth.setHeadColsSpread()
+    generateWidth.setHeadColsGrouping()
   }
 
 })
 
 onUnmounted(() => {
-  document.removeEventListener('mousemove', handleMouseMove)
-  document.removeEventListener('mouseup', stopResize)
+  document.removeEventListener('mousemove', moveResizer.handleMouseMove)
+  document.removeEventListener('mouseup', moveResizer.stopResize)
 })
 
 </script>
