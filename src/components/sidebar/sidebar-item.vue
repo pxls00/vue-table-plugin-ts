@@ -47,7 +47,7 @@ import type IRouteItem from '@/interfaces/nav-route-item'
 import type GetRoutePath from '@/types/routes/get-route-path'
 
 // components
-import IconDropdownArrow from '@/assets/icons/icon_dropdown_arrow.svg?component' 
+import IconDropdownArrow from '@/assets/icons/icon_dropdown_arrow.svg?component'
 
 const getRoutePath = inject('getRoutePath') as GetRoutePath
 
