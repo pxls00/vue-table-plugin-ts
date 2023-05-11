@@ -137,8 +137,8 @@ function setTableWidth () {
   tableWidth.value = tableMainDiv.value?.offsetWidth as number
 }
 
-function startResize ({ index, key }: IResizerDataEmit) {
-  moveResizer.startResize({ index, key })
+function startResize ({ index, key, el }: IResizerDataEmit) {
+  moveResizer.startResize({ index, key, el })
 }
 
 const moveResizer = new MouseMoveResizer(columnsData.value)
@@ -146,7 +146,9 @@ const moveResizer = new MouseMoveResizer(columnsData.value)
 document.addEventListener('mousemove', (event) =>
   moveResizer.handleMouseMove(event)
 )
-document.addEventListener('mouseup', (event) => moveResizer.stopResize())
+document.addEventListener('mouseup', (event) => {
+  moveResizer.stopResize()
+})
 
 onMounted(() => {
   setTableWidth()

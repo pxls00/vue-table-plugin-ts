@@ -25,13 +25,14 @@
             'table__body-data',
             row[column.key]?.class ? getClassOfCol(row[column.key].class) : '',
           ]"
+          :style="{ width: `${column.width}px` }"
         >
           <slot
             :name="`cell(${column.key})`"
             :value="row[column.key]"
             :item="row"
           >
-            {{ row[column.key]?.value || row[column.key] }}
+            {{ row[column.key]?.value || row[column.key] || `&nbsp;` }}  
           </slot>
         </td>
       </tr>

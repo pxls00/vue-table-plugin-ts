@@ -43,12 +43,18 @@
     border-spacing: 0;
     border-style: hidden;
     width: max-content;
-    th,
+    th {
+      position: relative;
+      white-space: pre-wrap;
+      text-overflow: ellipsis;  
+      display: inline-block;
+    }
     td {
       position: relative;
       white-space: pre-wrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      display: inline-block;
     }
   }
 
@@ -59,6 +65,10 @@
       padding: 1rem;
       font-size: 1.6rem;
       font-weight: 600;
+      &-content {
+        width: 100%;
+        overflow: hidden;
+      }
     }
   }
 
@@ -156,9 +166,21 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 10px;
+  transform: translateX(50%);
+  z-index: 5;
+  width: 5px;
   height: 100%;
   cursor: col-resize;
+  transition: .2s;
+  background-color: blue;
+
+  &:hover {
+    width: 10px;
+  }
+  &:active {
+    width: 10px;
+    cursor: col-resize;
+  }
 }
 
 // table thead tr:first-child th {
