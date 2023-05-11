@@ -1,7 +1,5 @@
 <template>
-  <thead
-    :class="['table__head', { 'table__head-fixed': props.fixedHeader }]"
-  >
+  <thead :class="['table__head', { 'table__head-fixed': props.fixedHeader }]">
     <th
       v-for="(column, index) in props.columnsData"
       :key="index"
@@ -25,11 +23,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
-
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'TableHeadSimpleComponent'
+  name: 'TableHeadSimpleComponent',
 })
 </script>
 
@@ -40,8 +37,8 @@ import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
 
 interface IProps {
-  fixedHeader: boolean,
-  resize: boolean,
+  fixedHeader: boolean
+  resize: boolean
   columnsData: ITableHeadColumnItem[]
 }
 
@@ -50,16 +47,19 @@ const emits = defineEmits<{
   (e: 'startResize', data: IResizerDataEmit): IResizerDataEmit
 }>()
 
-function startResize (index:number, key:string):void {
-  emits('startResize', {index, key})
+function startResize (index: number, key: string): void {
+  emits('startResize', { index, key })
 }
 
-function isCanResizeCol (index: number, column: ITableHeadColumnItem):boolean {
-  if(index !== props.columnsData.length - 1 && column.resizable !== false && props.resize) {        
+function isCanResizeCol (index: number, column: ITableHeadColumnItem): boolean {
+  if (
+    index !== props.columnsData.length - 1 &&
+    column.resizable !== false &&
+    props.resize
+  ) {
     return true
   }
-  
+
   return false
 }
-
 </script>

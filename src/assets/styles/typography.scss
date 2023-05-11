@@ -1,29 +1,35 @@
-h1, .h1 {
+h1,
+.h1 {
   font-size: 32px;
   font-weight: 500;
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: 24px;
   font-weight: 500;
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: 18px;
   font-weight: 500;
 }
 
-h4, .h4 {
+h4,
+.h4 {
   font-size: 16px;
   font-weight: 500;
 }
 
-h5, .h5 {
+h5,
+.h5 {
   font-size: 13px;
   font-weight: 500;
 }
 
-h6, .h6 {
+h6,
+.h6 {
   font-size: 11px;
   font-weight: 500;
 }
@@ -65,10 +71,10 @@ h6, .h6 {
     text-align: center;
   }
   &--link {
-    color: map-get($blue, 'light-navy')
+    color: map-get($blue, 'light-navy');
   }
   &--white {
-    color: map-get($white, 'base')
+    color: map-get($white, 'base');
   }
   // &--header {
   //   text-align: center;

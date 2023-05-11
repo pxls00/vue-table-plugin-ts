@@ -1,5 +1,5 @@
 interface IResizeData {
-  index: number,
+  index: number
   key: string
 }
 

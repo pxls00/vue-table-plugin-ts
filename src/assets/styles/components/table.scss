@@ -17,17 +17,17 @@
 
     /* Track */
     &::-webkit-scrollbar-track {
-      background: #f1f1f1; 
+      background: #f1f1f1;
     }
-    
+
     /* Handle */
     &::-webkit-scrollbar-thumb {
-      background: #888; 
+      background: #888;
     }
 
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
-      background: #555; 
+      background: #555;
     }
 
     table {
@@ -37,13 +37,14 @@
       border-bottom: none;
     }
   }
-  
+
   &__content {
     border-collapse: separate;
     border-spacing: 0;
     border-style: hidden;
     width: max-content;
-    th, td {
+    th,
+    td {
       position: relative;
       white-space: pre-wrap;
       text-overflow: ellipsis;
@@ -52,7 +53,8 @@
   }
 
   &__head {
-    &-row {}
+    &-row {
+    }
     &-col {
       padding: 1rem;
       font-size: 1.6rem;
@@ -64,15 +66,17 @@
     &-light {
       table {
         background: white;
-        td, th {
-          color: black
+        td,
+        th {
+          color: black;
         }
       }
     }
     &-light.table--theme-border-x {
       table {
         border-bottom: 1px solid #c0c0c0;
-        td, th {
+        td,
+        th {
           border-top: 1px solid #c0c0c0;
         }
       }
@@ -80,7 +84,8 @@
     &-light.table--theme-border-y {
       table {
         border-left: 1px solid #c0c0c0;
-        td, th {
+        td,
+        th {
           border-right: 1px solid #c0c0c0;
         }
       }
@@ -98,15 +103,17 @@
     &-dark {
       table {
         background: rgb(10, 10, 10);
-        td, th {
-          color: white
+        td,
+        th {
+          color: white;
         }
       }
     }
     &-dark.table--theme-border-x {
       table {
         border-bottom: 1px solid #000000;
-        td, th {
+        td,
+        th {
           border-top: 1px solid #000000;
         }
       }
@@ -114,7 +121,8 @@
     &-dark.table--theme-border-y {
       table {
         border-left: 1px solid #000000;
-        td, th {
+        td,
+        th {
           border-right: 1px solid #000000;
         }
       }
@@ -131,7 +139,7 @@
 
   &__body {
     &-data {
-      padding: .8rem 1rem;
+      padding: 0.8rem 1rem;
       font-size: 1.4rem;
     }
   }

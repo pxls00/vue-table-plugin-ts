@@ -1,8 +1,7 @@
-
 interface INavRouteItem {
-  linkName: string,
-  href: string,
-  nested?: INavRouteItem[] | any,
+  linkName: string
+  href: string
+  nested?: INavRouteItem[] | any
   currentPage?: boolean
 }
 

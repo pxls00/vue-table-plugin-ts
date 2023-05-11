@@ -14,15 +14,13 @@ const routes: RouteRecordRaw[] = [
         path: getRoutePath('carriersDirectory'),
         name: 'Carriers Directory',
         component: () => import('@/pages/carriers/directory.vue'),
-        meta: {
-        },
+        meta: {},
       },
       {
         path: getRoutePath('carriersBase'),
         name: 'Carriers Base',
         component: () => import('@/pages/carriers/base.vue'),
-        meta: {
-        },
+        meta: {},
       },
     ],
   },

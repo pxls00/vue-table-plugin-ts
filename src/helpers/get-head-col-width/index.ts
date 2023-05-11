@@ -35,9 +35,8 @@ class HeadColsWidth {
     return this._columnsRowGrouped
   }
 
-
   constructor (
-    overWidth:number,
+    overWidth: number,
     columnsData: ITableHeadColumnItem[],
     columnsRowSpreated: ITableHeadColumnItem[],
     columnsRowGrouped: ColumnItemGroupedRowItem[]
@@ -49,7 +48,10 @@ class HeadColsWidth {
     this._columnsRowGrouped = columnsRowGrouped
   }
 
-  setHeadColsWidth (data: ITableHeadColumnItem[]=this._columnsData, maxWidth: number=this._tableWidth) {   
+  setHeadColsWidth (
+    data: ITableHeadColumnItem[] = this._columnsData,
+    maxWidth: number = this._tableWidth
+  ) {
     this.setHeadColsWidthIfTheyExists(data, maxWidth)
 
     if (this._columnsWithoutWidth.length) {
@@ -57,9 +59,12 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsWidthIfTheyExists (data: ITableHeadColumnItem[], maxWidth: number):void {
+  setHeadColsWidthIfTheyExists (
+    data: ITableHeadColumnItem[],
+    maxWidth: number
+  ): void {
     data.forEach((item) => {
-      if(!item.width) {
+      if (!item.width) {
         this._columnsWithoutWidth.push(item)
       } else {
         item.width = this.getHeadColWidth(item.width, item.minWidth, maxWidth)
@@ -67,19 +72,19 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsWidthIfTheyNotExists (data: ITableHeadColumnItem[]):void {
+  setHeadColsWidthIfTheyNotExists (data: ITableHeadColumnItem[]): void {
     data.forEach((item) => {
       if (item.width && typeof item.width === 'number') {
         this._overWidth -= item.width
       }
     })
-    
+
     if (this._overWidth > 0) {
       data.forEach((item) => {
         if (!item.width) {
           item.width = (this._overWidth - 10) / this._columnsWithoutWidth.length
-        } 
-        
+        }
+
         if (item.children && item.children.length) {
           this.setHeadColsWidth(item.children, item.width as number)
         }
@@ -87,35 +92,43 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsGrouping (data: ITableHeadColumnItem[]=this._columnsData, index:number=0):void {
-    const indexColumnRow:number = index ? index : this._columnsRowGrouped.length
+  setHeadColsGrouping (
+    data: ITableHeadColumnItem[] = this._columnsData,
+    index: number = 0
+  ): void {
+    const indexColumnRow: number = index
+      ? index
+      : this._columnsRowGrouped.length
 
-    if(!this._columnsRowGrouped[indexColumnRow] || !this._columnsRowGrouped[indexColumnRow].length) {
+    if (
+      !this._columnsRowGrouped[indexColumnRow] ||
+      !this._columnsRowGrouped[indexColumnRow].length
+    ) {
       this._columnsRowGrouped[indexColumnRow] = []
-    } 
+    }
 
-    data.forEach(item => {
+    data.forEach((item) => {
       const _ = JSON.parse(JSON.stringify(item))
 
       delete _.children
       this._columnsRowGrouped[indexColumnRow].push(_)
 
-      if(item.children && item.children.length) {
+      if (item.children && item.children.length) {
         this.setHeadColsGrouping(item.children, indexColumnRow + 1)
       }
     })
   }
 
-  setHeadColsSpread (data: ITableHeadColumnItem[]=this._columnsData):void {
-    data.forEach(item => {
-      if(item.children && item.children.length) {
+  setHeadColsSpread (data: ITableHeadColumnItem[] = this._columnsData): void {
+    data.forEach((item) => {
+      if (item.children && item.children.length) {
         this.setHeadColsSpread(item.children)
-      }else if(!item.children) {
+      } else if (!item.children) {
         this._columnsRowSpreated.push(item)
       }
     })
   }
-  
+
   getHeadColWidth = generateHeadWidth
 }
 

@@ -5,7 +5,7 @@
     </div>
     <div class="sidebar__nav">
       <ul class="sidebar__list">
-        <SidebarItem 
+        <SidebarItem
           v-for="item in routes"
           :key="item.href"
           :route="item"
@@ -19,16 +19,16 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'SidebarMainComponent'
+  name: 'SidebarMainComponent',
 })
 </script>
 
 <script lang="ts" setup>
-import {ref, inject, watchEffect} from 'vue'
+import { ref, inject, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 
 // components
@@ -52,7 +52,7 @@ const moreRoutes = ref<IRouteItem[]>([
   {
     href: 'signOut',
     linkName: 'Выход',
-  }
+  },
 ])
 const route = useRoute()
 
@@ -61,10 +61,10 @@ const getRoutePath = inject('getRoutePath') as GetRoutePath
 setCurrentPage(route.path)
 
 function setCurrentPage (path: string) {
-  routes.value.forEach((link:IRouteItem, index):void => {
+  routes.value.forEach((link: IRouteItem, index): void => {
     link.currentPage = path.startsWith(getRoutePath(link.href))
 
-    if(link.nested && link.nested.length) {
+    if (link.nested && link.nested.length) {
       routes.value[index].nested = ref<IRouteItem[]>(link.nested)
       // console.log(isRef(routes.value[index].nested))
       setCurrentPageRoute(link.nested, path)
@@ -72,8 +72,11 @@ function setCurrentPage (path: string) {
   })
 }
 
-function setCurrentPageRoute (routesList: IRouteItem[] | any, path: string):void {
-  routesList.forEach((link:IRouteItem):void => {
+function setCurrentPageRoute (
+  routesList: IRouteItem[] | any,
+  path: string
+): void {
+  routesList.forEach((link: IRouteItem): void => {
     link.currentPage = path.startsWith(getRoutePath(link.href))
   })
 }

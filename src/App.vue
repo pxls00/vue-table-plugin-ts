@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { 
-  // useRoute, 
-  RouterView
+import {
+  // useRoute,
+  RouterView,
 } from 'vue-router'
 
 import { computed } from 'vue'

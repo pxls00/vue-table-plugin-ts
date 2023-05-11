@@ -5,7 +5,7 @@ import type ICurrentUser from '@/interfaces/user'
 
 const defaultUserCredentials = {
   name: 'Денис Потемкин',
-  avatar: ''
+  avatar: '',
 }
 
 export const useUserStore = defineStore('user', () => {

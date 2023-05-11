@@ -1,16 +1,18 @@
 <template>
-  <thead
-    :class="['table__head', { 'table__head-fixed': fixedHeader }]"
-  >
+  <thead :class="['table__head', { 'table__head-fixed': fixedHeader }]">
     <tr
-      v-for="rowItem in props.tableHeadData"
-      :key="rowItem"
+      v-for="(rowItem, i) in props.tableHeadData"
+      :key="i"
       class="table__head-row table__row"
     >
       <th
         v-for="(column, index) in rowItem"
         :key="index"
-        :style="{ width: `${getWidthByKeyCols(column.key, props.columnsData) || column.width}px` }"
+        :style="{
+          width: `${
+            getWidthByKeyCols(column.key, props.columnsData) || column.width
+          }px`,
+        }"
         :colspan="column.colspan"
         :rowspan="column.rowspan"
         :class="['table__head-col', getClassOfCol(column)]"
@@ -28,10 +30,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'TableHeadGroupedComponent'
+  name: 'TableHeadGroupedComponent',
 })
 </script>
 
@@ -39,16 +41,14 @@ export default defineComponent({
 import getClassOfCol from '@/helpers/get-class-of-col'
 import getWidthByKeyCols from '@/helpers/get-width-by-key-cols'
 
-
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type ColumnGroupedRow from '@/types/table/column-grouped-row'
 
 interface IProps {
-  fixedHeader: boolean,
-  tableHeadData: ColumnGroupedRow[],
+  fixedHeader: boolean
+  tableHeadData: ColumnGroupedRow[]
   columnsData: ITableHeadColumnItem[]
 }
 
 const props = defineProps<IProps>()
-
 </script>

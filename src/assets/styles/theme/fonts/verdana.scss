@@ -5,8 +5,7 @@ $path_to_base_font_file: '#{$path_to_folder}/verdana/verdana';
 
   src: url('#{$path_to_base_font_file}.ttf');
 
-  src: local($myriad_pro),
-    url('#{$path_to_base_font_file}.woff') format('woff'),
+  src: local($myriad_pro), url('#{$path_to_base_font_file}.woff') format('woff'),
     url('#{$path_to_base_font_file}.ttf') format('truetype');
   font-display: auto;
   font-style: normal;

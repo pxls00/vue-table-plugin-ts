@@ -9,11 +9,11 @@ export const SIDEBAR_ROUTES = [
     nested: [
       {
         linkName: 'Справочник',
-        href: 'carriersDirectory'
+        href: 'carriersDirectory',
       },
       {
         linkName: 'База',
-        href: 'carriersBase'
+        href: 'carriersBase',
       },
     ],
   },

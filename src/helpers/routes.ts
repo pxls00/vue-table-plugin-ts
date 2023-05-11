@@ -1,9 +1,8 @@
-import createCurrentRoutePath from '@/helpers/createCurrentRoutePath'
+// import createCurrentRoutePath from '@/helpers/createCurrentRoutePath'
 /* createCurrentRoutePath creates router that has params */
 
 import type Routes from '@/interfaces/routes'
 import type GetRoutePath from '@/types/routes/get-route-path'
-
 
 const routes: Routes = {
   logistics: '/logistics',

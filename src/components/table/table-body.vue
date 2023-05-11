@@ -8,9 +8,7 @@
     @change="log"
   >
     <template #item="{ element }">
-      <div
-        class="list-group-item table__drag-future"
-      >
+      <div class="list-group-item table__drag-future">
         {{ element.name }}
       </div>
     </template>
@@ -45,21 +43,21 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'TableBodyComponent' 
+  name: 'TableBodyComponent',
 })
 </script>
 
 <script lang="ts" setup>
-import {ref, computed} from 'vue'
+import { ref, computed } from 'vue'
 
-import { VueDraggableNext} from 'vue-draggable-next'
+import { VueDraggableNext } from 'vue-draggable-next'
 import getClassOfCol from '@/helpers/get-class-of-col'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 
 interface IProps {
-  bodyData: any[],
-  tableColumnData: ITableHeadColumnItem[],
+  bodyData: any[]
+  tableColumnData: ITableHeadColumnItem[]
 }
 
 const props = defineProps<IProps>()
@@ -85,5 +83,4 @@ const myList = computed<any[]>({
 function log (event: Event): void {
   console.log(event)
 }
-
 </script>
