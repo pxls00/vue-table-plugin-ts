@@ -4,9 +4,6 @@
     :table-data="tableData"
     :fixed-header="true"
   >
-    <template #cell(fukkname)="{ value }">
-      {{ value + 'test' }}
-    </template>
     <template #cell(actions)>
       <span class="drag-btn">|||</span>
     </template>
@@ -27,9 +24,8 @@ import { ref } from 'vue'
 import TableMain from '@/components/table/table-main.vue'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
-import type IColumnGroupedItem from '@/interfaces/table/column-grouped-item'
 
-const tableColumns = ref<ITableHeadColumnItem[] | IColumnGroupedItem[]>([
+const tableColumns = ref<ITableHeadColumnItem[]>([
   {
     label: '',
     key: 'actions',
@@ -96,7 +92,6 @@ const tableData = ref<any[]>([
     date_created_c: '04',
     date_created_c1: '05',
     date_created_c2: '04',
-  }
+  },
 ])
-
 </script>

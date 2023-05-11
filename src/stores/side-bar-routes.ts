@@ -15,11 +15,11 @@ export const useSidebarRoutesStore = defineStore('sidebarRoutes', () => {
       nested: [
         {
           linkName: 'Справочник',
-          href: 'directory'
+          href: 'directory',
         },
         {
           linkName: 'База',
-          href: 'base'
+          href: 'base',
         },
       ],
     },
@@ -33,11 +33,11 @@ export const useSidebarRoutesStore = defineStore('sidebarRoutes', () => {
       nested: [
         {
           linkName: 'Справочник',
-          href: 'directory'
+          href: 'directory',
         },
         {
           linkName: 'База',
-          href: 'base'
+          href: 'base',
         },
       ],
     },

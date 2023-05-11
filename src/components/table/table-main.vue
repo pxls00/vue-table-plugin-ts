@@ -7,22 +7,19 @@
         'max-width': tableMaxWidthSize,
       }"
     >
-      <table 
-        ref="tableMain"
-        class="table__content"
-      >
-        <TableHeadGroupedComponent 
+      <table ref="tableMain" class="table__content">
+        <TableHeadGroupedComponent
           v-if="showHeader && hasChildren"
           :fixed-header="fixedHeader"
           :resize="resize"
-          :table-head-data="tableColumnDataHead"
+          :table-head-data="(tableColumnDataHead as ColumnItemGroupedRowItem[])"
           :columns-data="columnsData"
         >
           <template v-for="(_, slot) in $slots" #[slot]>
             <slot :name="slot" />
           </template>
         </TableHeadGroupedComponent>
-        <TableHeadSimpleComponent 
+        <TableHeadSimpleComponent
           v-else-if="showHeader && !hasChildren"
           :fixed-header="fixedHeader"
           :resize="resize"
@@ -33,7 +30,7 @@
             <slot :name="slot" />
           </template>
         </TableHeadSimpleComponent>
-        <TableBodyComponent 
+        <TableBodyComponent
           :body-data="tableData"
           :table-column-data="tableColumnDataBody"
         >
@@ -47,10 +44,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'TableComponent'
+  name: 'TableComponent',
 })
 </script>
 
@@ -69,14 +66,14 @@ import type ColumnItemWidthType from '@/types/table/column-item-width'
 import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
 
 interface IProps {
-  tableColumns: ITableHeadColumnItem[],
-  tableData: any,
-  maxWidth?: number |string,
-  borderAround?: boolean,
-  borderX?: boolean,
-  borderY?: boolean,
-  showHeader?: boolean,
-  fixedHeader?: boolean,
+  tableColumns: ITableHeadColumnItem[]
+  tableData: any
+  maxWidth?: number | string
+  borderAround?: boolean
+  borderX?: boolean
+  borderY?: boolean
+  showHeader?: boolean
+  fixedHeader?: boolean
   resize?: boolean
 }
 
@@ -87,7 +84,7 @@ const props = withDefaults(defineProps<IProps>(), {
   borderY: true,
   showHeader: true,
   fixedHeader: false,
-  resize: true
+  resize: true,
 })
 
 const columnsData = ref<ITableHeadColumnItem[]>(props.tableColumns),
@@ -95,7 +92,6 @@ const columnsData = ref<ITableHeadColumnItem[]>(props.tableColumns),
   columnsRowGrouped = ref<ColumnItemGroupedRowItem[]>([]),
   columnsRowSpreated = ref<ITableHeadColumnItem[]>([]),
   tableMainDiv = ref<InstanceType<typeof HTMLDivElement> | undefined>(undefined)
-
 
 const tableMaxWidthSize = computed<ColumnItemWidthType>(() => {
   if (props.maxWidth && typeof props.maxWidth === 'number') {
@@ -106,29 +102,31 @@ const tableMaxWidthSize = computed<ColumnItemWidthType>(() => {
     return `${tableMaxWidth.value}px`
   }
 })
-    
-const tableMaxWidth = computed<number | undefined>(() => {
-  if(props.maxWidth) {
+
+const tableMaxWidth = computed<number | undefined | string>(() => {
+  if (props.maxWidth) {
     return props.maxWidth
-  } else {
-    return tableWidth.value
   }
-}) 
+  
+  return tableWidth.value
+})
 
 const hasChildren = computed<boolean>(() => {
-  return columnsData.value.some(item => item.children && item.children.length)
-}) 
+  return columnsData.value.some((item) => item.children && item.children.length)
+})
 
-const tableColumnDataHead = computed<ColumnItemGroupedRowItem[] | ITableHeadColumnItem[]>(() => {
-  if(hasChildren.value) {
+const tableColumnDataHead = computed<
+  ColumnItemGroupedRowItem[] | ITableHeadColumnItem[]
+>(() => {
+  if (hasChildren.value) {
     return columnsRowGrouped.value
-  }else {
+  } else {
     return columnsData.value
   }
 })
 
 const tableColumnDataBody = computed<ITableHeadColumnItem[]>(() => {
-  if(hasChildren.value) {
+  if (hasChildren.value) {
     return columnsRowSpreated.value
   } else {
     return columnsData.value
@@ -139,13 +137,15 @@ function setTableWidth () {
   tableWidth.value = tableMainDiv.value?.offsetWidth as number
 }
 
-function startResize ({index, key}: IResizerDataEmit) {
-  moveResizer.startResize({index, key})
+function startResize ({ index, key }: IResizerDataEmit) {
+  moveResizer.startResize({ index, key })
 }
 
 const moveResizer = new MouseMoveResizer(columnsData.value)
 
-document.addEventListener('mousemove', (event) => moveResizer.handleMouseMove(event))
+document.addEventListener('mousemove', (event) =>
+  moveResizer.handleMouseMove(event)
+)
 document.addEventListener('mouseup', (event) => moveResizer.stopResize())
 
 onMounted(() => {
@@ -160,19 +160,16 @@ onMounted(() => {
 
   generateWidth.setHeadColsWidth()
 
-  if(hasChildren.value) {
+  if (hasChildren.value) {
     generateWidth.setHeadColsSpread()
     generateWidth.setHeadColsGrouping()
   }
-
 })
 
 onUnmounted(() => {
   document.removeEventListener('mousemove', moveResizer.handleMouseMove)
   document.removeEventListener('mouseup', moveResizer.stopResize)
 })
-
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

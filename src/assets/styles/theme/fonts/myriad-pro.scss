@@ -1,8 +1,8 @@
 $path_to_regular_font_file: '#{$path_to_folder}/myriad-pro/regular';
- 
-$path_to_bold_font_file: '#{$path_to_folder}/myriad-pro/bold'; 
 
-$path_to_semi_bold_font_file: '#{$path_to_folder}/myriad-pro/semibold'; 
+$path_to_bold_font_file: '#{$path_to_folder}/myriad-pro/bold';
+
+$path_to_semi_bold_font_file: '#{$path_to_folder}/myriad-pro/semibold';
 
 @font-face {
   font-family: $myriad_pro;
@@ -23,8 +23,7 @@ $path_to_semi_bold_font_file: '#{$path_to_folder}/myriad-pro/semibold';
 
   src: url('#{$path_to_bold_font_file}.ttf');
 
-  src: local($myriad_pro),
-    url('#{$path_to_bold_font_file}.woff') format('woff'),
+  src: local($myriad_pro), url('#{$path_to_bold_font_file}.woff') format('woff'),
     url('#{$path_to_bold_font_file}.ttf') format('truetype');
   font-display: auto;
   font-weight: 700;

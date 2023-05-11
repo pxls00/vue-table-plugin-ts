@@ -1,5 +1,5 @@
 interface ICurrentUser {
-  name: string,
+  name: string
   avatar: string
 }
 

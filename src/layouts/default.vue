@@ -11,11 +11,11 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'DefaultLayout'
+  name: 'DefaultLayout',
 })
 </script>
 
-<script lang='ts' setup>
+<script lang="ts" setup>
 import SidebarMain from '@/components/sidebar/sidebar-main.vue'
 
 import { RouterView } from 'vue-router'

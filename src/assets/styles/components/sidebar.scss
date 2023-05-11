@@ -31,20 +31,20 @@
       background: map-get($blue, 'dark-blue-grey');
     }
     &--active {
-      border-left: 2px solid map-get($orange, 'base')!important;
+      border-left: 2px solid map-get($orange, 'base') !important;
       span {
         transform: rotate(-90deg) !important;
       }
     }
     &--active + ul {
       li.sidebar__item--active_parent {
-        background-color: map-get($black, 'dark' );
+        background-color: map-get($black, 'dark');
       }
       a {
         color: map-get($blue, 'cloudy-blue');
         &.sidebar__item--active {
           border-left-color: transparent !important;
-          color: map-get($white, 'base' );
+          color: map-get($white, 'base');
         }
       }
     }

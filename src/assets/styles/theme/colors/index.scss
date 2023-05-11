@@ -7,7 +7,7 @@ $colors: (
   'black': $black,
   'blue': $blue,
   'white': $white,
-  'orange': $orange
+  'orange': $orange,
 );
 
 @mixin background-color($color_value) {

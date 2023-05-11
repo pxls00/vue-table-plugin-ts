@@ -17,18 +17,18 @@ const routes: RouteRecordRaw[] = [
     path: getRoutePath('logistics'),
     name: 'Logistics',
     meta: {
-      layout: 'default'
+      layout: 'default',
     },
-    component: HomePage
+    component: HomePage,
   },
   ...carriersRoutes,
   {
     path: getRoutePath('logistics'),
     name: 'Logistics',
     meta: {
-      layout: 'default'
+      layout: 'default',
     },
-    component: () => import('@/pages/logistics.vue')
+    component: () => import('@/pages/logistics.vue'),
   },
   {
     path: getRoutePath('signOut'),
@@ -39,12 +39,12 @@ const routes: RouteRecordRaw[] = [
     path: getRoutePath('settings'),
     name: 'settings',
     redirect: getRoutePath('logistics'),
-  }
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
 })
 
 export default router

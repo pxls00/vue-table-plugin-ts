@@ -1,5 +1,4 @@
-declare module '*.svg' {
-  import Vue, {VueConstructor} from 'vue'
-  const content: VueConstructor<Vue>
+declare module '*.svg?component' {
+  const content: any
   export default content
 }
