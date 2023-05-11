@@ -11,10 +11,12 @@
         :value="column.label"
         :item="column"
       >
-        <p class="table__head-col-content">{{ column.label }} &nbsp; </p>
+        <p class="table__head-col-content">
+          {{ column.label }} &nbsp;
+        </p>
         <span
           v-if="isCanResizeCol(index, column)"
-          :ref="(el:HTMLSpanElement) => {resizer[index] = el}"
+          :ref="(el: any):void => {resizer[index] = el}"
           :class="['resize-handle table__head-col-resize']"
           @mousedown="startResize(index, column.key)"
         />
@@ -32,7 +34,7 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import getClassOfCol from '@/helpers/get-class-of-col'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
@@ -52,7 +54,7 @@ const emits = defineEmits<{
 }>()
 
 function startResize (index: number, key: string): void {
-  emits('startResize', { index, key, el:(resizer.value[index])})
+  emits('startResize', { index, key, el: resizer.value[index] })
 }
 
 function isCanResizeCol (index: number, column: ITableHeadColumnItem): boolean {

@@ -107,7 +107,7 @@ const tableMaxWidth = computed<number | undefined | string>(() => {
   if (props.maxWidth) {
     return props.maxWidth
   }
-  
+
   return tableWidth.value
 })
 

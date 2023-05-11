@@ -32,7 +32,7 @@
             :value="row[column.key]"
             :item="row"
           >
-            {{ row[column.key]?.value || row[column.key] || `&nbsp;` }}  
+            {{ row[column.key]?.value || row[column.key] || `&nbsp;` }}
           </slot>
         </td>
       </tr>

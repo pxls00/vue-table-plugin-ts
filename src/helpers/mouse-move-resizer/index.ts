@@ -31,7 +31,7 @@ class MouseMoveResizer {
 
   startResize ({ index, el }: IResizerDataEmit) {
     const eventTarget = event as Event | any
-    
+
     this._resizeEL = el
     this._resizing = true
     this._resizeIndex = index
@@ -41,23 +41,23 @@ class MouseMoveResizer {
   stopResize () {
     this.resizeColumns(this._resizeNum)
 
-    if(this._resizeEL) {
+    if (this._resizeEL) {
       this._resizeEL.style.right = '0px'
     }
-    
+
     this._resizing = false
     this._resizeIndex = 0
     this._startX = 0
   }
 
-  handleMouseMove (event: Event | any):void {
+  handleMouseMove (event: Event | any): void {
     if (this._resizing) {
       const deltaX: number = event.pageX - this.startX
 
-      if(this._resizeEL) {
+      if (this._resizeEL) {
         const buttonRight = this._resizeEL.style.right
 
-        this._resizeNum = +buttonRight.replace('px', '') + (deltaX * -1)
+        this._resizeNum = +buttonRight.replace('px', '') + deltaX * -1
         this._resizeEL.style.right = `${this._resizeNum}px`
       }
       // const currentParallelColumn = this._columnsData[this._resizeIndex + 1]
@@ -77,27 +77,41 @@ class MouseMoveResizer {
     }
   }
 
-  resizeColumns (widthNumber: number):void {
+  resizeColumns (widthNumber: number): void {
     const currentColumn: ITableHeadColumnItem =
-    this._columnsData[this._resizeIndex]
+      this._columnsData[this._resizeIndex]
     const currentParallelColumn = this._columnsData[this._resizeIndex + 1]
-    const newColumnWidth: number = (currentColumn.width as number) + widthNumber * -1
+    const newColumnWidth: number =
+      (currentColumn.width as number) + widthNumber * -1
     const newParralelColumnWidth =
-    (currentParallelColumn.width as number) + widthNumber
-    const canGetWidth = currentParallelColumn.width as number - currentParallelColumn.minWidth
-    const newColumnWidthWithCanGetWidth = currentColumn.width as number + canGetWidth
+      (currentParallelColumn.width as number) + widthNumber
+    const canGetWidth =
+      (currentParallelColumn.width as number) - currentParallelColumn.minWidth
+    const newColumnWidthWithCanGetWidth =
+      (currentColumn.width as number) + canGetWidth
 
     if (
       newColumnWidth >= currentColumn.minWidth &&
-      newParralelColumnWidth >= currentParallelColumn.minWidth && newColumnWidth < newColumnWidthWithCanGetWidth
+      newParralelColumnWidth >= currentParallelColumn.minWidth &&
+      newColumnWidth < newColumnWidthWithCanGetWidth
     ) {
-      console.log(newColumnWidth, currentColumn.width, currentParallelColumn.width, newColumnWidthWithCanGetWidth)
+      console.log(
+        newColumnWidth,
+        currentColumn.width,
+        currentParallelColumn.width,
+        newColumnWidthWithCanGetWidth
+      )
       currentColumn.width = newColumnWidth
       currentParallelColumn.width = newParralelColumnWidth
     }
 
-    if(newColumnWidth > newColumnWidthWithCanGetWidth) {
-      console.log(newColumnWidth, currentColumn.width, currentParallelColumn.width, newColumnWidthWithCanGetWidth)
+    if (newColumnWidth > newColumnWidthWithCanGetWidth) {
+      console.log(
+        newColumnWidth,
+        currentColumn.width,
+        currentParallelColumn.width,
+        newColumnWidthWithCanGetWidth
+      )
       currentColumn.width = newColumnWidthWithCanGetWidth
       currentParallelColumn.width = currentParallelColumn.minWidth
     }
