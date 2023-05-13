@@ -1,7 +1,5 @@
 .table {
   &-main {
-    padding: 40px;
-    background: aqua;
   }
 
   &__wrapper {
@@ -45,9 +43,12 @@
     width: max-content;
     th {
       position: relative;
-      white-space: pre-wrap;
-      text-overflow: ellipsis;
       display: inline-block;
+      p {
+        overflow: hidden;
+        white-space: pre-wrap;
+        text-overflow: ellipsis;
+      }
     }
     td {
       position: relative;

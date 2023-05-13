@@ -2,7 +2,6 @@
   <TableMain
     :table-columns="tableColumns"
     :table-data="tableData"
-    :fixed-header="true"
   >
     <template #cell(actions)>
       <span class="drag-btn">|||</span>
@@ -63,6 +62,26 @@ const tableData = ref<any[]>([
     name_a: 'Bar',
     full_name: 'BAR_FULL_BAR',
     date_created: '02',
+    children: [
+      {
+        id: 8,
+        name_a: 'bar',
+        full_name: 'bar_full_bar',
+        date_created: '08'
+      },
+      {
+        id: 8,
+        name_a: 'bar',
+        full_name: 'bar_full_bar',
+        date_created: '08'
+      },
+      {
+        id: 8,
+        name_a: 'bar',
+        full_name: 'bar_full_bar',
+        date_created: '08'
+      }
+    ]
   },
   {
     id: 3,
@@ -81,6 +100,14 @@ const tableData = ref<any[]>([
     name_a: 'dog',
     full_name: 'DOG_FULL_BAR',
     date_created_c1: '04',
+    children: [
+      {
+        id: 8,
+        name_a: 'bar',
+        full_name: 'bar_full_bar',
+        date_created: '08'
+      }
+    ]
   },
   {
     id: 4,

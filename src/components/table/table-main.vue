@@ -7,7 +7,10 @@
         'max-width': tableMaxWidthSize,
       }"
     >
-      <table ref="tableMain" class="table__content">
+      <table 
+        ref="tableMain"
+        class="table__content"
+      >
         <TableHeadGroupedComponent
           v-if="showHeader && hasChildren"
           :fixed-header="fixedHeader"
@@ -34,8 +37,15 @@
           :body-data="tableData"
           :table-column-data="tableColumnDataBody"
         >
-          <template v-for="(_, slot) in $slots" #[slot]>
-            <slot :name="slot" />
+          <template v-for="(_, slot) in $slots" #[slot]="data">
+            <slot :name="slot" :data="{...data}" />
+          </template>
+          <template #table__item-accordion="{row}">
+            <TableComponent 
+              :table-columns="JSON.parse(JSON.stringify(columnsData))"
+              :table-data="row.children"
+              :max-width="tableMaxWidthSize"
+            />
           </template>
         </TableBodyComponent>
       </table>
@@ -105,6 +115,9 @@ const tableMaxWidthSize = computed<ColumnItemWidthType>(() => {
 
 const tableMaxWidth = computed<number | undefined | string>(() => {
   if (props.maxWidth) {
+    if(typeof props.maxWidth === 'string')
+      return props.maxWidth.replace('px', '')
+
     return props.maxWidth
   }
 
@@ -154,7 +167,7 @@ onMounted(() => {
   setTableWidth()
 
   const generateWidth = new GenerateHeadColWidths(
-    tableWidth.value as number,
+    tableMaxWidth.value as number,
     columnsData.value as ITableHeadColumnItem[],
     columnsRowSpreated.value as ITableHeadColumnItem[],
     columnsRowGrouped.value as ColumnItemGroupedRowItem[]

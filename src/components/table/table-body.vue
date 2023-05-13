@@ -18,23 +18,36 @@
         :key="rowIndex"
         :class="['table__body-row']"
       >
-        <td
-          v-for="(column, colIndex) in tableColumnData"
-          :key="colIndex"
-          :class="[
-            'table__body-data',
-            row[column.key]?.class ? getClassOfCol(row[column.key].class) : '',
-          ]"
-          :style="{ width: `${column.width}px` }"
-        >
-          <slot
-            :name="`cell(${column.key})`"
-            :value="row[column.key]"
-            :item="row"
+        <tbody @click="dataRowClicked(row, rowIndex)">
+          <td
+            v-for="(column, colIndex) in tableColumnData"
+            :key="colIndex"
+            :class="[
+              'table__body-data',
+              row[column.key]?.class ? getClassOfCol(row[column.key].class) : '',
+            ]"
+            :style="{ width: `${column.width}px` }"
           >
-            {{ row[column.key]?.value || row[column.key] || `&nbsp;` }}
+            <slot
+              :name="`cell(${column.key})`"
+              :value="row[column.key]"
+              :item="row"
+            >
+              {{ row[column.key]?.value || row[column.key] || `&nbsp;` }}
+            </slot>
+          </td>
+        </tbody>
+        <tbody 
+          v-if="row.isOpenAccordion"
+        >
+          <slot 
+            v-if="!!row.children"
+            name="table__item-accordion"
+            :row="row"
+          >
+            {{ row }}
           </slot>
-        </td>
+        </tbody>
       </tr>
     </transition-group>
   </VueDraggableNext>
@@ -81,7 +94,24 @@ const myList = computed<any[]>({
   },
 })
 
+function generateTableData () {
+  return rowsData.value.map(item => {
+    if(item.children) {
+      item.isOpenAccordion = ref<boolean>(false)
+    } 
+  })
+}
+
+function dataRowClicked (row: any, rowIndex: number) {
+  if(row.children) {
+    console.log(row.isOpenAccordion)
+    row.isOpenAccordion = !row.isOpenAccordion
+  }
+}
+
 function log (event: Event): void {
   console.log(event)
 }
+
+generateTableData()
 </script>
