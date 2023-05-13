@@ -1,8 +1,5 @@
 <template>
-  <TableMain
-    :table-head="tableColumns"
-    :table-body="tableData"
-  >
+  <TableMain :table-head="tableColumns" :table-body="tableData">
     <template #cell(actions)>
       <span class="drag-btn">|||</span>
     </template>
@@ -58,7 +55,7 @@ const tableData = ref<IDataItem[]>([
       name_a: 'Foo',
       full_name: 'FOO_FULL_BAR',
       date_created: '01',
-    }
+    },
   },
   {
     id: 2,
@@ -74,7 +71,7 @@ const tableData = ref<IDataItem[]>([
           data: {
             name_a: {
               value: 'bar',
-              class: ['test test_!']
+              class: ['test test_!'],
             },
             full_name: 'bar_full_bar',
             date_created: '08',
@@ -87,29 +84,29 @@ const tableData = ref<IDataItem[]>([
                   name_a: 'bar',
                   full_name: 'bar_full_bar',
                   date_created: '08',
-                }
-              }
-            ]
-          }
+                },
+              },
+            ],
+          },
         },
         {
           id: 8,
           data: {
             name_a: 'bar',
             full_name: 'bar_full_bar',
-            date_created: '08'
-          }
+            date_created: '08',
+          },
         },
         {
           id: 8,
           data: {
             name_a: 'bar',
             full_name: 'bar_full_bar',
-            date_created: '08'
-          }
-        }
-      ]
-    }
+            date_created: '08',
+          },
+        },
+      ],
+    },
   },
   {
     id: 3,
@@ -117,7 +114,7 @@ const tableData = ref<IDataItem[]>([
       name_a: 'Cat',
       full_name: 'CAT_FULL_BAR',
       date_created: '03',
-    }
+    },
   },
   {
     id: 4,
@@ -125,7 +122,7 @@ const tableData = ref<IDataItem[]>([
       name_a: 'dog',
       full_name: 'DOG_FULL_BAR',
       date_created: '04',
-    }
+    },
   },
   {
     id: 4,
@@ -141,11 +138,11 @@ const tableData = ref<IDataItem[]>([
           data: {
             name_a: 'bar',
             full_name: 'bar_full_bar',
-            date_created: '08'
-          }
-        }
-      ]
-    }
+            date_created: '08',
+          },
+        },
+      ],
+    },
   },
   {
     id: 4,
@@ -158,7 +155,7 @@ const tableData = ref<IDataItem[]>([
       date_created_c: '04',
       date_created_c1: '05',
       date_created_c2: '04',
-    }
+    },
   },
 ])
 </script>

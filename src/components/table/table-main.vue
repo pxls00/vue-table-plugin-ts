@@ -7,10 +7,7 @@
         'max-width': tableMaxWidthSize,
       }"
     >
-      <table 
-        ref="tableMain"
-        class="table__content"
-      >
+      <table ref="tableMain" class="table__content">
         <TableHeadGroupedComponent
           v-if="showHeader && hasChildren"
           :fixed-header="fixedHeader"
@@ -38,11 +35,13 @@
           :table-head="tableColumnDataBody"
         >
           <template v-for="(_, slot) in $slots" #[slot]="data">
-            <slot :name="slot" :data="{...data}" />
+            <slot :name="slot" :data="{ ...data }" />
           </template>
-          <template #table__item-accordion="{row}">
-            <TableComponent 
-              :table-head="row.children.tableHead || JSON.parse(JSON.stringify(tableHead))"
+          <template #table__item-accordion="{ row }">
+            <TableComponent
+              :table-head="
+                row.children.tableHead || JSON.parse(JSON.stringify(tableHead))
+              "
               :table-body="row.children.bodyData"
               :max-width="tableMaxWidthSize"
             />
@@ -117,7 +116,7 @@ const tableMaxWidthSize = computed<ColumnItemWidthType>(() => {
 
 const tableMaxWidth = computed<number | undefined | string>(() => {
   if (props.maxWidth) {
-    if(typeof props.maxWidth === 'string')
+    if (typeof props.maxWidth === 'string')
       return props.maxWidth.replace('px', '')
 
     return props.maxWidth
@@ -127,22 +126,27 @@ const tableMaxWidth = computed<number | undefined | string>(() => {
 })
 
 const hasChildren = computed<boolean>(() => {
-  if(tableHead.value.some((item: ColumnGroupedItem | any):boolean => item.children && !!item.children.length)) {
+  if (
+    tableHead.value.some(
+      (item: ColumnGroupedItem | any): boolean =>
+        item.children && !!item.children.length
+    )
+  ) {
     return true
   }
 
   return false
 })
 
-const tableColumnDataHead = computed<
-  ColumnGroupedRowItem[] | ColumnItem[]
->(() => {
-  if (hasChildren.value) {
-    return tableHeadGrouped.value
-  } else {
-    return tableHead.value
+const tableColumnDataHead = computed<ColumnGroupedRowItem[] | ColumnItem[]>(
+  () => {
+    if (hasChildren.value) {
+      return tableHeadGrouped.value
+    } else {
+      return tableHead.value
+    }
   }
-})
+)
 
 const tableColumnDataBody = computed<ColumnItem[]>(() => {
   if (hasChildren.value) {

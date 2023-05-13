@@ -24,29 +24,31 @@
             :key="colIndex"
             :class="[
               'table__body-data',
-              typeof row.data[column.key] === 'object' ? getClassOfCol(row.data[column.key].class) : '',
+              typeof row.data[column.key] === 'object'
+                ? getClassOfCol(row.data[column.key].class)
+                : '',
             ]"
             :style="{ width: `${column.width}px` }"
           >
             <slot
               :name="`cell(${column.key})`"
               :value="
-                typeof row.data[column.key] === 'object' ? row.data[column.key].value : row.data[column.key]
+                typeof row.data[column.key] === 'object'
+                  ? row.data[column.key].value
+                  : row.data[column.key]
               "
               :item="row"
             >
-              {{ typeof row.data[column.key] === 'object' ? row.data[column.key as string].value : row.data[column.key] || `&nbsp;` }}
+              {{
+                typeof row.data[column.key] === 'object'
+                  ? row.data[column.key as string].value
+                  : row.data[column.key] || `&nbsp;`
+              }}
             </slot>
           </td>
         </tbody>
-        <tbody 
-          v-if="row.isOpenAccordion"
-        >
-          <slot 
-            v-if="!!row.children"
-            name="table__item-accordion"
-            :row="row"
-          >
+        <tbody v-if="row.isOpenAccordion">
+          <slot v-if="!!row.children" name="table__item-accordion" :row="row">
             {{ row }}
           </slot>
         </tbody>
@@ -98,16 +100,15 @@ const tableDataListForDragNDrop = computed<ITableBodyItem[]>({
 })
 
 function generateTableData () {
-  return rowsData.value.map(item => {
-
-    if(item.children && !!item.children.bodyData.length) {
+  return rowsData.value.map((item) => {
+    if (item.children && !!item.children.bodyData.length) {
       item.isOpenAccordion = ref<boolean>(false)
-    } 
+    }
   })
 }
 
 function dataRowClicked (row: any, rowIndex: number) {
-  if(row.children) {
+  if (row.children) {
     row.isOpenAccordion = !row.isOpenAccordion
   }
 }

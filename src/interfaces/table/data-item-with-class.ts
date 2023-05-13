@@ -1,7 +1,7 @@
 import type ItemClassType from '@/types/table/item-class'
 
 interface TableDataItemWithClass {
-  value: string,
+  value: string
   class: ItemClassType
 }
 

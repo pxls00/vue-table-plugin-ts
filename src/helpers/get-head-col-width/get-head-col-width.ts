@@ -5,7 +5,6 @@ function generateHeadWidth (
   minWidth: number,
   maxWidth: number
 ): number | undefined {
-  
   if (typeof width === 'string') {
     if (Number(width)) {
       return generateHeadWidth(

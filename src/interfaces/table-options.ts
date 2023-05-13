@@ -5,9 +5,8 @@ interface TableOptions {
   borderY?: boolean
   showHeader?: boolean
   fixedHeader?: boolean
-  resize?: boolean,
+  resize?: boolean
   accordionResize: boolean
-  accordionClass: 
 }
 
 export default TableOptions
