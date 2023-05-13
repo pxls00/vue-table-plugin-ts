@@ -1,6 +1,6 @@
 <template>
   <VueDraggableNext
-    v-model="myList"
+    v-model="tableDataListForDragNDrop"
     class="dragArea list-group w-full table__body"
     tag="tbody"
     v-bind="dragOptions"
@@ -14,27 +14,44 @@
     </template>
     <transition-group>
       <tr
-        v-for="(row, rowIndex) in myList"
+        v-for="(row, rowIndex) in tableDataListForDragNDrop"
         :key="rowIndex"
         :class="['table__body-row']"
       >
-        <td
-          v-for="(column, colIndex) in tableColumnData"
-          :key="colIndex"
-          :class="[
-            'table__body-data',
-            row[column.key]?.class ? getClassOfCol(row[column.key].class) : '',
-          ]"
-          :style="{ width: `${column.width}px` }"
-        >
-          <slot
-            :name="`cell(${column.key})`"
-            :value="row[column.key]"
-            :item="row"
+        <tbody @click="dataRowClicked(row, rowIndex)">
+          <td
+            v-for="(column, colIndex) in tableHead"
+            :key="colIndex"
+            :class="[
+              'table__body-data',
+              typeof row.data[column.key] === 'object'
+                ? getClassOfCol(row.data[column.key].class)
+                : '',
+            ]"
+            :style="{ width: `${column.width}px` }"
           >
-            {{ row[column.key]?.value || row[column.key] || `&nbsp;` }}
+            <slot
+              :name="`cell(${column.key})`"
+              :value="
+                typeof row.data[column.key] === 'object'
+                  ? row.data[column.key].value
+                  : row.data[column.key]
+              "
+              :item="row"
+            >
+              {{
+                typeof row.data[column.key] === 'object'
+                  ? row.data[column.key].value
+                  : row.data[column.key] || `&nbsp;`
+              }}
+            </slot>
+          </td>
+        </tbody>
+        <tbody v-if="row.isOpenAccordion">
+          <slot v-if="!!row.children" name="table__item-accordion" :row="(row as ITableBodyItem)">
+            {{ row }}
           </slot>
-        </td>
+        </tbody>
       </tr>
     </transition-group>
   </VueDraggableNext>
@@ -54,16 +71,18 @@ import { ref, computed } from 'vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 import getClassOfCol from '@/helpers/get-class-of-col'
 
-import type ITableHeadColumnItem from '@/interfaces/table/column-item'
+import type ITableHeadItem from '@/interfaces/table/column-item'
+import type ITableBodyItem from '@/interfaces/table/data-item-base'
+// import type ITableDataItemData from '@/interfaces/table/data-item-data'
 
 interface IProps {
-  bodyData: any[]
-  tableColumnData: ITableHeadColumnItem[]
+  tableBody: ITableBodyItem[]
+  tableHead: ITableHeadItem[]
 }
 
 const props = defineProps<IProps>()
 
-const rowsData = ref<any[]>(props.bodyData)
+const rowsData = ref<ITableBodyItem[]>(props.tableBody)
 
 const dragOptions = ref<Object>({
   animation: 200,
@@ -72,16 +91,32 @@ const dragOptions = ref<Object>({
   ghostClass: 'ghost',
 })
 
-const myList = computed<any[]>({
+const tableDataListForDragNDrop = computed<ITableBodyItem[]>({
   get () {
     return rowsData.value
   },
-  set (value: any[]) {
+  set (value: ITableBodyItem[]) {
     rowsData.value = value
   },
 })
 
+function generateTableData () {
+  return rowsData.value.map((item) => {
+    if (item.children && !!item.children.bodyData.length) {
+      item.isOpenAccordion = ref<boolean>(false)
+    }
+  })
+}
+
+function dataRowClicked (row: any, rowIndex: number) {
+  if (row.children) {
+    row.isOpenAccordion = !row.isOpenAccordion
+  }
+}
+
 function log (event: Event): void {
   console.log(event)
 }
+
+generateTableData()
 </script>

@@ -1,15 +1,15 @@
 import generateHeadWidth from '@/helpers/get-head-col-width/get-head-col-width'
 
-import type ITableHeadColumnItem from '@/interfaces/table/column-item'
-import type ColumnItemGroupedRowItem from '@/types/table/column-grouped-row'
+import type IHeadItem from '@/interfaces/table/column-item'
+import type IHeadGroupedRowItem from '@/types/table/column-grouped-row'
 
 class HeadColsWidth {
-  private _columnsWithoutWidth: ITableHeadColumnItem[] = []
+  private _columnsWithoutWidth: IHeadItem[] = []
   private _overWidth: number
-  private _columnsData: ITableHeadColumnItem[] = []
+  private _columnsData: IHeadItem[] | any = []
   private _tableWidth: number
-  private _columnsRowSpreated: ITableHeadColumnItem[] = []
-  private _columnsRowGrouped: ColumnItemGroupedRowItem[] = []
+  private _columnsRowSpreated: IHeadItem[] = []
+  private _columnsRowGrouped: IHeadGroupedRowItem[] = []
 
   get columnsWithoutWidth () {
     return this._columnsWithoutWidth
@@ -37,9 +37,9 @@ class HeadColsWidth {
 
   constructor (
     overWidth: number,
-    columnsData: ITableHeadColumnItem[],
-    columnsRowSpreated: ITableHeadColumnItem[],
-    columnsRowGrouped: ColumnItemGroupedRowItem[]
+    columnsData: IHeadItem[],
+    columnsRowSpreated: IHeadItem[],
+    columnsRowGrouped: IHeadGroupedRowItem[]
   ) {
     this._tableWidth = overWidth
     this._overWidth = this._tableWidth
@@ -49,7 +49,7 @@ class HeadColsWidth {
   }
 
   setHeadColsWidth (
-    data: ITableHeadColumnItem[] = this._columnsData,
+    data: IHeadItem[] = this._columnsData,
     maxWidth: number = this._tableWidth
   ) {
     this.setHeadColsWidthIfTheyExists(data, maxWidth)
@@ -60,7 +60,7 @@ class HeadColsWidth {
   }
 
   setHeadColsWidthIfTheyExists (
-    data: ITableHeadColumnItem[],
+    data: IHeadItem[],
     maxWidth: number
   ): void {
     data.forEach((item) => {
@@ -72,7 +72,7 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsWidthIfTheyNotExists (data: ITableHeadColumnItem[]): void {
+  setHeadColsWidthIfTheyNotExists (data: IHeadItem[]): void {
     data.forEach((item) => {
       if (item.width && typeof item.width === 'number') {
         this._overWidth -= item.width
@@ -80,7 +80,7 @@ class HeadColsWidth {
     })
 
     if (this._overWidth > 0) {
-      data.forEach((item) => {
+      data.forEach((item: IHeadItem | any) => {
         if (!item.width) {
           item.width = (this._overWidth - 10) / this._columnsWithoutWidth.length
         }
@@ -93,7 +93,7 @@ class HeadColsWidth {
   }
 
   setHeadColsGrouping (
-    data: ITableHeadColumnItem[] = this._columnsData,
+    data: IHeadItem[] = this._columnsData,
     index: number = 0
   ): void {
     const indexColumnRow: number = index
@@ -107,7 +107,7 @@ class HeadColsWidth {
       this._columnsRowGrouped[indexColumnRow] = []
     }
 
-    data.forEach((item) => {
+    data.forEach((item: IHeadItem | any) => {
       const _ = JSON.parse(JSON.stringify(item))
 
       delete _.children
@@ -119,8 +119,8 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsSpread (data: ITableHeadColumnItem[] = this._columnsData): void {
-    data.forEach((item) => {
+  setHeadColsSpread (data: IHeadItem[] | any = this._columnsData): void {
+    data.forEach((item: IHeadItem | any) => {
       if (item.children && item.children.length) {
         this.setHeadColsSpread(item.children)
       } else if (!item.children) {
