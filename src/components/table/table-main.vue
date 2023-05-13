@@ -12,8 +12,8 @@
           v-if="showHeader && hasChildren"
           :fixed-header="fixedHeader"
           :resize="resize"
-          :table-head-data="(tableColumnDataHead as ColumnItemGroupedRowItem[])"
-          :columns-data="columnsData"
+          :table-head-data="(tableColumnDataHead as ColumnGroupedRowItem[])"
+          :columns-data="tableHead"
         >
           <template v-for="(_, slot) in $slots" #[slot]>
             <slot :name="slot" />
@@ -23,7 +23,7 @@
           v-else-if="showHeader && !hasChildren"
           :fixed-header="fixedHeader"
           :resize="resize"
-          :columns-data="columnsData"
+          :columns-data="tableHead"
           @start-resize="startResize"
         >
           <template v-for="(_, slot) in $slots" #[slot]>
@@ -31,11 +31,20 @@
           </template>
         </TableHeadSimpleComponent>
         <TableBodyComponent
-          :body-data="tableData"
-          :table-column-data="tableColumnDataBody"
+          :table-body="tableBody"
+          :table-head="tableColumnDataBody"
         >
-          <template v-for="(_, slot) in $slots" #[slot]>
-            <slot :name="slot" />
+          <template v-for="(_, slot) in $slots" #[slot]="data">
+            <slot :name="slot" :data="{ ...data }" />
+          </template>
+          <template #table__item-accordion="{ row }">
+            <TableComponent
+              :table-head="
+                row.children ? row.children.headData : JSON.parse(JSON.stringify(tableHead))
+              "
+              :table-body="(row.children ? row.children.bodyData : [])"
+              :max-width="tableMaxWidthSize"
+            />
           </template>
         </TableBodyComponent>
       </table>
@@ -60,14 +69,16 @@ import TableBodyComponent from '@/components/table/table-body.vue'
 import GenerateHeadColWidths from '@/helpers/get-head-col-width'
 import MouseMoveResizer from '@/helpers/mouse-move-resizer'
 
-import type ITableHeadColumnItem from '@/interfaces/table/column-item'
-import type ColumnItemGroupedRowItem from '@/types/table/column-grouped-row'
+import type ColumnItem from '@/interfaces/table/column-item'
+import type ColumnGroupedItem from '@/interfaces/table/column-grouped-item'
+import type TableDataItem from '@/interfaces/table/data-item-base'
+import type ColumnGroupedRowItem from '@/types/table/column-grouped-row'
 import type ColumnItemWidthType from '@/types/table/column-item-width'
 import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
 
 interface IProps {
-  tableColumns: ITableHeadColumnItem[]
-  tableData: any
+  tableHead: ColumnItem[] | ColumnGroupedItem[]
+  tableBody: TableDataItem[]
   maxWidth?: number | string
   borderAround?: boolean
   borderX?: boolean
@@ -87,10 +98,10 @@ const props = withDefaults(defineProps<IProps>(), {
   resize: true,
 })
 
-const columnsData = ref<ITableHeadColumnItem[]>(props.tableColumns),
+const tableHead = ref<ColumnItem[] | ColumnGroupedItem[]>(props.tableHead),
   tableWidth = ref<number>(),
-  columnsRowGrouped = ref<ColumnItemGroupedRowItem[]>([]),
-  columnsRowSpreated = ref<ITableHeadColumnItem[]>([]),
+  tableHeadGrouped = ref<ColumnGroupedRowItem[]>([]),
+  tableHeadSpreated = ref<ColumnItem[]>([]),
   tableMainDiv = ref<InstanceType<typeof HTMLDivElement> | undefined>(undefined)
 
 const tableMaxWidthSize = computed<ColumnItemWidthType>(() => {
@@ -105,6 +116,9 @@ const tableMaxWidthSize = computed<ColumnItemWidthType>(() => {
 
 const tableMaxWidth = computed<number | undefined | string>(() => {
   if (props.maxWidth) {
+    if (typeof props.maxWidth === 'string')
+      return props.maxWidth.replace('px', '')
+
     return props.maxWidth
   }
 
@@ -112,24 +126,33 @@ const tableMaxWidth = computed<number | undefined | string>(() => {
 })
 
 const hasChildren = computed<boolean>(() => {
-  return columnsData.value.some((item) => item.children && item.children.length)
-})
-
-const tableColumnDataHead = computed<
-  ColumnItemGroupedRowItem[] | ITableHeadColumnItem[]
->(() => {
-  if (hasChildren.value) {
-    return columnsRowGrouped.value
-  } else {
-    return columnsData.value
+  if (
+    tableHead.value.some(
+      (item: ColumnGroupedItem | any): boolean =>
+        item.children && !!item.children.length
+    )
+  ) {
+    return true
   }
+
+  return false
 })
 
-const tableColumnDataBody = computed<ITableHeadColumnItem[]>(() => {
+const tableColumnDataHead = computed<ColumnGroupedRowItem[] | ColumnItem[]>(
+  () => {
+    if (hasChildren.value) {
+      return tableHeadGrouped.value
+    } else {
+      return tableHead.value
+    }
+  }
+)
+
+const tableColumnDataBody = computed<ColumnItem[]>(() => {
   if (hasChildren.value) {
-    return columnsRowSpreated.value
+    return tableHeadSpreated.value
   } else {
-    return columnsData.value
+    return tableHead.value
   }
 })
 
@@ -141,7 +164,7 @@ function startResize ({ index, key, el }: IResizerDataEmit) {
   moveResizer.startResize({ index, key, el })
 }
 
-const moveResizer = new MouseMoveResizer(columnsData.value)
+const moveResizer = new MouseMoveResizer(tableHead.value)
 
 document.addEventListener('mousemove', (event) =>
   moveResizer.handleMouseMove(event)
@@ -154,10 +177,10 @@ onMounted(() => {
   setTableWidth()
 
   const generateWidth = new GenerateHeadColWidths(
-    tableWidth.value as number,
-    columnsData.value as ITableHeadColumnItem[],
-    columnsRowSpreated.value as ITableHeadColumnItem[],
-    columnsRowGrouped.value as ColumnItemGroupedRowItem[]
+    tableMaxWidth.value as number,
+    tableHead.value as ColumnItem[],
+    tableHeadSpreated.value as ColumnItem[],
+    tableHeadGrouped.value as ColumnGroupedRowItem[]
   )
 
   generateWidth.setHeadColsWidth()

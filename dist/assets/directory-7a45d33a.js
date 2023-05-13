@@ -1,0 +1,1 @@
+import{d as e,o as r,c as o}from"./index-125419ce.js";import{_ as t}from"./_plugin-vue_export-helper-c27b6911.js";const c=e({name:"CarriersDirectoryPage"});function n(a,s,i,p,_,d){return r(),o("div")}const l=t(c,[["render",n]]);export{l as default};

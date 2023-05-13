@@ -101,8 +101,8 @@ class MouseMoveResizer {
         currentParallelColumn.width,
         newColumnWidthWithCanGetWidth
       )
-      currentColumn.width = newColumnWidth
       currentParallelColumn.width = newParralelColumnWidth
+      currentColumn.width = newColumnWidth
     }
 
     if (newColumnWidth > newColumnWidthWithCanGetWidth) {
@@ -112,8 +112,8 @@ class MouseMoveResizer {
         currentParallelColumn.width,
         newColumnWidthWithCanGetWidth
       )
-      currentColumn.width = newColumnWidthWithCanGetWidth
       currentParallelColumn.width = currentParallelColumn.minWidth
+      currentColumn.width = newColumnWidthWithCanGetWidth
     }
   }
 }

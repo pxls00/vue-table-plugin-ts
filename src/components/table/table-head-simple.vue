@@ -12,7 +12,7 @@
         :item="column"
       >
         <p class="table__head-col-content">
-          {{ column.label }} &nbsp;
+          {{ column.label || '&nbsp;' }}
         </p>
         <span
           v-if="isCanResizeCol(index, column)"
