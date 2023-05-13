@@ -44,6 +44,7 @@
     th {
       position: relative;
       display: inline-block;
+      user-select: none;
       p {
         overflow: hidden;
         white-space: pre-wrap;
