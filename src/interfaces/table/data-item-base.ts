@@ -1,13 +1,10 @@
-import type TableDataItemWithClass from '@/interfaces/table/data-item-with-class'
 import type TableDataChildren from '@/interfaces/table/table-data-children'
+import type TableDataItemData from '@/interfaces/table/data-item-data'
 
-interface TableData {
-  [key: string]: TableDataItemWithClass | string
-}
 
 interface TableDataItemBase {
   id: string | number
-  data: TableData
+  data: TableDataItemData
   children?: TableDataChildren
   isOpenAccordion?: boolean | unknown
 }

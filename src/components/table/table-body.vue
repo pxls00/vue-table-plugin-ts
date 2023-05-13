@@ -41,14 +41,14 @@
             >
               {{
                 typeof row.data[column.key] === 'object'
-                  ? row.data[column.key as string].value
+                  ? row.data[column.key].value
                   : row.data[column.key] || `&nbsp;`
               }}
             </slot>
           </td>
         </tbody>
         <tbody v-if="row.isOpenAccordion">
-          <slot v-if="!!row.children" name="table__item-accordion" :row="row">
+          <slot v-if="!!row.children" name="table__item-accordion" :row="(row as ITableBodyItem)">
             {{ row }}
           </slot>
         </tbody>
@@ -73,6 +73,7 @@ import getClassOfCol from '@/helpers/get-class-of-col'
 
 import type ITableHeadItem from '@/interfaces/table/column-item'
 import type ITableBodyItem from '@/interfaces/table/data-item-base'
+// import type ITableDataItemData from '@/interfaces/table/data-item-data'
 
 interface IProps {
   tableBody: ITableBodyItem[]

@@ -40,9 +40,9 @@
           <template #table__item-accordion="{ row }">
             <TableComponent
               :table-head="
-                row.children.tableHead || JSON.parse(JSON.stringify(tableHead))
+                row.children ? row.children.headData : JSON.parse(JSON.stringify(tableHead))
               "
-              :table-body="row.children.bodyData"
+              :table-body="(row.children ? row.children.bodyData : [])"
               :max-width="tableMaxWidthSize"
             />
           </template>
