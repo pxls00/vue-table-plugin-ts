@@ -4,7 +4,11 @@
     class="dragArea list-group w-full table__body"
     tag="tbody"
     v-bind="dragOptions"
-    :handle="props.childrenNestedLength === 1 ? '.drag-btn' : `.drag-btn_${props.childrenNestedLength}`"
+    :handle="
+      props.childrenNestedLength === 1
+        ? '.drag-btn'
+        : `.drag-btn_${props.childrenNestedLength}`
+    "
     @change="changed"
   >
     <transition-group>
@@ -26,7 +30,9 @@
             :style="{ width: `${column.width}px` }"
           >
             <slot
-              :name="getSlotName(`cell(${column.key})`, props.childrenNestedLength)"
+              :name="
+                getSlotName(`cell(${column.key})`, props.childrenNestedLength)
+              "
               :value="
                 typeof row.data[column.key] === 'object'
                   ? row.data[column.key].value
@@ -41,15 +47,23 @@
               }}
             </slot>
             <span
-              v-if="props.showAccordionArrow && colIndex === tableHead.length - 1 && row.children && row.children.bodyData.length"
-              :class="['table__body-data-accordion-icon', {'opened': row.isOpenAccordion}]"
+              v-if="
+                props.showAccordionArrow &&
+                  colIndex === tableHead.length - 1 &&
+                  row.children &&
+                  row.children.bodyData.length
+              "
+              :class="[
+                'table__body-data-accordion-icon',
+                { opened: row.isOpenAccordion },
+              ]"
             />
-          </td> 
+          </td>
         </tbody>
         <tbody v-if="row.isOpenAccordion">
           <slot
             v-if="!!row.children"
-            name="table__item-accordion" 
+            name="table__item-accordion"
             :row="(row as ITableBodyItem)"
           >
             {{ row }}
@@ -88,7 +102,7 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   childrenNestedLength: 1,
-  showAccordionArrow: true
+  showAccordionArrow: true,
 })
 
 const emits = defineEmits<{

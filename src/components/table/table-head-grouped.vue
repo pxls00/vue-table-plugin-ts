@@ -18,7 +18,9 @@
         :class="['table__head-col', getClassOfCol(column)]"
       >
         <slot
-          :name="getSlotName(`cell-head(${column.key})`, props.childrenNestedLength)"
+          :name="
+            getSlotName(`cell-head(${column.key})`, props.childrenNestedLength)
+          "
           :value="column.label"
           :item="column"
         >
@@ -42,19 +44,17 @@ import getClassOfCol from '@/helpers/get-class-of-col'
 import getWidthByKeyCols from '@/helpers/get-width-by-key-cols'
 import getSlotName from '@/helpers/get-slot-name'
 
-
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type ColumnGroupedRow from '@/types/table/column-grouped-row'
 
 interface IProps {
   fixedHeader: boolean
   tableHeadData: ColumnGroupedRow[]
-  columnsData: ITableHeadColumnItem[],
+  columnsData: ITableHeadColumnItem[]
   childrenNestedLength?: number
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  childrenNestedLength: 1
+  childrenNestedLength: 1,
 })
-
 </script>

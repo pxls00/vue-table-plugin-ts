@@ -7,7 +7,9 @@
       :class="['table__head-col', getClassOfCol(column)]"
     >
       <slot
-        :name="getSlotName(`cell-head(${column.key})`, props.childrenNestedLength)"
+        :name="
+          getSlotName(`cell-head(${column.key})`, props.childrenNestedLength)
+        "
         :value="column.label"
         :item="column"
       >
@@ -38,21 +40,20 @@ import { ref } from 'vue'
 import getClassOfCol from '@/helpers/get-class-of-col'
 import getSlotName from '@/helpers/get-slot-name'
 
-
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
 
 interface IProps {
   fixedHeader: boolean
   resize: boolean
-  columnsData: ITableHeadColumnItem[],
+  columnsData: ITableHeadColumnItem[]
   childrenNestedLength?: number
 }
 
 const resizer = ref<HTMLSpanElement[]>([])
 
 const props = withDefaults(defineProps<IProps>(), {
-  childrenNestedLength: 1
+  childrenNestedLength: 1,
 })
 const emits = defineEmits<{
   (e: 'startResize', data: IResizerDataEmit): IResizerDataEmit

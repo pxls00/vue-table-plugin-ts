@@ -1,5 +1,5 @@
 <template>
-  <TableMain 
+  <TableMain
     :table-head="tableColumns"
     :table-body="tableData"
     @dragndrop-changed="dragndropChanged"

@@ -1,6 +1,8 @@
-const tableSlotNames = function (slotName: string | number, childrenNestedLength: number):string | number {
-  
-  if(childrenNestedLength !== 1) {    
+const tableSlotNames = function (
+  slotName: string | number,
+  childrenNestedLength: number
+): string | number {
+  if (childrenNestedLength !== 1) {
     return `${childrenNestedLength}_${slotName}`
   }
 

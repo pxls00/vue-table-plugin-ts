@@ -46,14 +46,18 @@
           <template #table__item-accordion="{ row }">
             <TableComponent
               :table-head="
-                row.children && row.children.headData && row.children.headData.length ? row.children.headData : JSON.parse(JSON.stringify(tableHead))
+                row.children &&
+                  row.children.headData &&
+                  row.children.headData.length
+                  ? row.children.headData
+                  : JSON.parse(JSON.stringify(tableHead))
               "
-              :table-body="(row.children ? row.children.bodyData : [])"
+              :table-body="row.children ? row.children.bodyData : []"
               :max-width="tableMaxWidthSize"
               :children-nested-length="props.childrenNestedLength + 1"
-              @dragndrop-changed="(data: TableDataItem[]) => dragndropChanged(data, row.id)"
+              @dragndrop-changed="(data: TableDataItem[]) => dragndropChanged(data, row.id as number | string)"
             >
-              <template v-for="(_, slot) in $slots" #[slot]="data">
+              <template v-for="(_, slot) in $slots" #[slot]="data: any">
                 <slot :name="slot" :data="{ ...data }" />
               </template>
             </TableComponent>
@@ -98,8 +102,8 @@ interface IProps {
   showHeader?: boolean
   fixedHeader?: boolean
   resize?: boolean
-  childrenNestedLength?: number,
-  showAccordionArrow?: boolean,
+  childrenNestedLength?: number
+  showAccordionArrow?: boolean
   dragndrop?: boolean
 }
 
@@ -117,7 +121,7 @@ const props = withDefaults(defineProps<IProps>(), {
   resize: true,
   childrenNestedLength: 1,
   showAccordionArrow: true,
-  dragndrop: true
+  dragndrop: true,
 })
 
 const tableHead = ref<ColumnItem[] | ColumnGroupedItem[]>(props.tableHead),
@@ -186,10 +190,10 @@ function startResize ({ index, key, el }: IResizerDataEmit) {
   moveResizer.startResize({ index, key, el })
 }
 
-function dragndropChanged (data: TableDataItem[], id?:number) {
-  if(id) {
-    const _ = props.tableBody.map(item => {
-      if(item.id === id && item.children) {
+function dragndropChanged (data: TableDataItem[], id?: number | string) {
+  if (id) {
+    const _ = props.tableBody.map((item) => {
+      if (item.id === id && item.children) {
         item.children.bodyData = data
 
         return item
@@ -199,10 +203,9 @@ function dragndropChanged (data: TableDataItem[], id?:number) {
     })
 
     emits('dragndropChanged', _)
-  }else {
+  } else {
     emits('dragndropChanged', data)
   }
-
 }
 
 const moveResizer = new MouseMoveResizer(tableHead.value)
