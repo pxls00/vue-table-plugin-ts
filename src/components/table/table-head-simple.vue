@@ -7,7 +7,9 @@
       :class="['table__head-col', getClassOfCol(column)]"
     >
       <slot
-        :name="`cell-head(${column.key})`"
+        :name="
+          getSlotName(`cell-head(${column.key})`, props.childrenNestedLength)
+        "
         :value="column.label"
         :item="column"
       >
@@ -34,8 +36,9 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import getClassOfCol from '@/helpers/get-class-of-col'
+import getSlotName from '@/helpers/get-slot-name'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
@@ -44,11 +47,14 @@ interface IProps {
   fixedHeader: boolean
   resize: boolean
   columnsData: ITableHeadColumnItem[]
+  childrenNestedLength?: number
 }
 
 const resizer = ref<HTMLSpanElement[]>([])
 
-const props = defineProps<IProps>()
+const props = withDefaults(defineProps<IProps>(), {
+  childrenNestedLength: 1,
+})
 const emits = defineEmits<{
   (e: 'startResize', data: IResizerDataEmit): IResizerDataEmit
 }>()
@@ -68,8 +74,4 @@ function isCanResizeCol (index: number, column: ITableHeadColumnItem): boolean {
 
   return false
 }
-
-onMounted(() => {
-  console.log(resizer)
-})
 </script>

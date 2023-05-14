@@ -59,10 +59,7 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsWidthIfTheyExists (
-    data: IHeadItem[],
-    maxWidth: number
-  ): void {
+  setHeadColsWidthIfTheyExists (data: IHeadItem[], maxWidth: number): void {
     data.forEach((item) => {
       if (!item.width) {
         this._columnsWithoutWidth.push(item)
