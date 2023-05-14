@@ -78,15 +78,24 @@
     &-light {
       table {
         background: white;
+        table {
+          background: rgba(220, 220, 220, 0.805);
+        }
         td,
         th {
           color: black;
+        }
+        .table__body-data-accordion-icon {
+          border-color: #8d8d8d;
         }
       }
     }
     &-light.table--theme-border-x {
       table {
         border-bottom: 1px solid #c0c0c0;
+        table {
+          border: none;
+        }
         td,
         th {
           border-top: 1px solid #c0c0c0;
@@ -96,28 +105,27 @@
     &-light.table--theme-border-y {
       table {
         border-left: 1px solid #c0c0c0;
+        table {
+          border: none;
+        }
         td,
         th {
           border-right: 1px solid #c0c0c0;
         }
       }
     }
-    &-light.table--theme-stripe {
-      .table__content .table__body .table__body-row {
-        &:nth-child(odd) {
-          background: #f2f2f2;
-        }
-        &:hover {
-          background: #ececec;
-        }
-      }
-    }
     &-dark {
       table {
-        background: rgb(10, 10, 10);
+        background: rgba(10, 10, 10, 0.747);
         td,
         th {
           color: white;
+        }
+      }
+      .table__content .table__body .table__body-row {
+        background: rgba(31, 31, 31, 0.7);
+        &:hover {
+          background: rgba(19, 19, 19, 0.801);
         }
       }
     }
@@ -139,20 +147,27 @@
         }
       }
     }
-    &-dark.table--theme-stripe {
-      .table__content .table__body .table__body-row {
-        background: #1f1f1f;
-        &:hover {
-          background: #131313;
-        }
-      }
-    }
   }
 
   &__body {
     &-data {
       padding: 0.8rem 1rem;
       font-size: 1.4rem;
+      position: relative;
+      &-accordion-icon {
+        height: 12px;
+        width: 12px;
+        border-top: 3px solid;
+        border-right: 3px solid;
+        position: absolute;
+        right: 10px;
+        transform: rotate(135deg);
+        transition: 0.2s;
+        &.opened {
+          top: 12px;
+          transform: rotate(-45deg);
+        }
+      }
     }
   }
   &__head--fixed {

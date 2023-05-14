@@ -18,7 +18,9 @@
         :class="['table__head-col', getClassOfCol(column)]"
       >
         <slot
-          :name="`cell-head(${column.key})`"
+          :name="
+            getSlotName(`cell-head(${column.key})`, props.childrenNestedLength)
+          "
           :value="column.label"
           :item="column"
         >
@@ -40,6 +42,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import getClassOfCol from '@/helpers/get-class-of-col'
 import getWidthByKeyCols from '@/helpers/get-width-by-key-cols'
+import getSlotName from '@/helpers/get-slot-name'
 
 import type ITableHeadColumnItem from '@/interfaces/table/column-item'
 import type ColumnGroupedRow from '@/types/table/column-grouped-row'
@@ -48,7 +51,10 @@ interface IProps {
   fixedHeader: boolean
   tableHeadData: ColumnGroupedRow[]
   columnsData: ITableHeadColumnItem[]
+  childrenNestedLength?: number
 }
 
-const props = defineProps<IProps>()
+const props = withDefaults(defineProps<IProps>(), {
+  childrenNestedLength: 1,
+})
 </script>
