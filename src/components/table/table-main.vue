@@ -2,7 +2,7 @@
   <div class="table-main">
     <div
       ref="tableMainDiv"
-      class="table__wrapper table--theme-dark table--theme-border-x table--theme-border-y table--theme-stripe"
+      class="table__wrapper table--theme-dark table--theme-border-x table--theme-border-y"
       :style="{
         'max-width': tableMaxWidthSize,
       }"
@@ -14,6 +14,7 @@
           :resize="resize"
           :table-head-data="(tableColumnDataHead as ColumnGroupedRowItem[])"
           :columns-data="tableHead"
+          :children-nested-length="props.childrenNestedLength"
         >
           <template v-for="(_, slot) in $slots" #[slot]>
             <slot :name="slot" />
@@ -24,6 +25,7 @@
           :fixed-header="fixedHeader"
           :resize="resize"
           :columns-data="tableHead"
+          :children-nested-length="props.childrenNestedLength"
           @start-resize="startResize"
         >
           <template v-for="(_, slot) in $slots" #[slot]>
@@ -33,6 +35,10 @@
         <TableBodyComponent
           :table-body="tableBody"
           :table-head="tableColumnDataBody"
+          :children-nested-length="props.childrenNestedLength"
+          :show-accordion-arrow="showAccordionArrow"
+          :dragndrop="props.dragndrop"
+          @dragndrop-changed="dragndropChanged"
         >
           <template v-for="(_, slot) in $slots" #[slot]="data">
             <slot :name="slot" :data="{ ...data }" />
@@ -40,11 +46,17 @@
           <template #table__item-accordion="{ row }">
             <TableComponent
               :table-head="
-                row.children ? row.children.headData : JSON.parse(JSON.stringify(tableHead))
+                row.children && row.children.headData && row.children.headData.length ? row.children.headData : JSON.parse(JSON.stringify(tableHead))
               "
               :table-body="(row.children ? row.children.bodyData : [])"
               :max-width="tableMaxWidthSize"
-            />
+              :children-nested-length="props.childrenNestedLength + 1"
+              @dragndrop-changed="(data: TableDataItem[]) => dragndropChanged(data, row.id)"
+            >
+              <template v-for="(_, slot) in $slots" #[slot]="data">
+                <slot :name="slot" :data="{ ...data }" />
+              </template>
+            </TableComponent>
           </template>
         </TableBodyComponent>
       </table>
@@ -86,7 +98,14 @@ interface IProps {
   showHeader?: boolean
   fixedHeader?: boolean
   resize?: boolean
+  childrenNestedLength?: number,
+  showAccordionArrow?: boolean,
+  dragndrop?: boolean
 }
+
+const emits = defineEmits<{
+  (e: 'dragndropChanged', data: TableDataItem[]): TableDataItem[]
+}>()
 
 const props = withDefaults(defineProps<IProps>(), {
   maxWidth: '',
@@ -96,6 +115,9 @@ const props = withDefaults(defineProps<IProps>(), {
   showHeader: true,
   fixedHeader: false,
   resize: true,
+  childrenNestedLength: 1,
+  showAccordionArrow: true,
+  dragndrop: true
 })
 
 const tableHead = ref<ColumnItem[] | ColumnGroupedItem[]>(props.tableHead),
@@ -162,6 +184,25 @@ function setTableWidth () {
 
 function startResize ({ index, key, el }: IResizerDataEmit) {
   moveResizer.startResize({ index, key, el })
+}
+
+function dragndropChanged (data: TableDataItem[], id?:number) {
+  if(id) {
+    const _ = props.tableBody.map(item => {
+      if(item.id === id && item.children) {
+        item.children.bodyData = data
+
+        return item
+      }
+
+      return item
+    })
+
+    emits('dragndropChanged', _)
+  }else {
+    emits('dragndropChanged', data)
+  }
+
 }
 
 const moveResizer = new MouseMoveResizer(tableHead.value)

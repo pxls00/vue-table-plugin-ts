@@ -1,7 +1,14 @@
 <template>
-  <TableMain :table-head="tableColumns" :table-body="tableData">
+  <TableMain 
+    :table-head="tableColumns"
+    :table-body="tableData"
+    @dragndrop-changed="dragndropChanged"
+  >
     <template #cell(actions)>
       <span class="drag-btn">|||</span>
+    </template>
+    <template #2_cell(actions)>
+      <span class="drag-btn_2">||</span>
     </template>
   </TableMain>
 </template>
@@ -73,7 +80,7 @@ const tableData = ref<IDataItem[]>([
               value: 'bar',
               class: ['test test_!'],
             },
-            full_name: 'bar_full_bar',
+            full_name: 'bar_full_bar 1',
             date_created: '08',
           },
           children: {
@@ -81,8 +88,8 @@ const tableData = ref<IDataItem[]>([
               {
                 id: 10,
                 data: {
-                  name_a: 'bar',
-                  full_name: 'bar_full_bar',
+                  name_a: 'bar 2',
+                  full_name: 'bar_full_bar 2',
                   date_created: '08',
                 },
               },
@@ -158,4 +165,8 @@ const tableData = ref<IDataItem[]>([
     },
   },
 ])
+
+function dragndropChanged (data: IDataItem[]) {
+  console.log(data)
+}
 </script>
