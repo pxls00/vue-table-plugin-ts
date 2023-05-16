@@ -2,6 +2,40 @@
   <TableMain
     :table-head="tableColumns"
     :table-body="tableData"
+    :resize="false"
+    :theme="tableTheme"
+    @dragndrop-changed="dragndropChanged"
+  >
+    <template #cell(actions)>
+      <span class="drag-btn">|||</span>
+    </template>
+    <template #2_cell(actions)>
+      <span class="drag-btn_2">||</span>
+    </template>
+  </TableMain>
+  <br>
+  <br>
+  <br>
+  <br>
+  <TableMain
+    :table-head="tableColumns"
+    :table-body="tableData"
+    @dragndrop-changed="dragndropChanged"
+  >
+    <template #cell(actions)>
+      <span class="drag-btn">|||</span>
+    </template>
+    <template #2_cell(actions)>
+      <span class="drag-btn_2">||</span>
+    </template>
+  </TableMain>
+  <br>
+  <br>
+  <br>
+  <br>
+  <TableMain
+    :table-head="tableColumns"
+    :table-body="tableData"
     @dragndrop-changed="dragndropChanged"
   >
     <template #cell(actions)>
@@ -28,6 +62,11 @@ import TableMain from '@/components/table/table-main.vue'
 
 import type ITableHead from '@/interfaces/table/column-item'
 import type IDataItem from '@/interfaces/table/data-item-base'
+import type TableTHeme from '@/interfaces/table-themes'
+
+const tableTheme = ref<TableTHeme>({
+  mode: 'light',
+})
 
 const tableColumns = ref<ITableHead[]>([
   {
