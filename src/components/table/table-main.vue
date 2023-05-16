@@ -2,13 +2,16 @@
   <div class="table-main">
     <div
       ref="tableMainDiv"
-      :class="['table__wrapper', {
-        'table--theme-dark': tableTheme.mode === 'dark',
-        'table--theme-light': tableTheme.mode === 'light',
-        'table--theme-border-x': tableTheme.borderX,
-        'table--theme-border-y': tableTheme.borderY,
-        'table--theme-border-around': tableTheme.borderAround
-      }]"
+      :class="[
+        'table__wrapper',
+        {
+          'table--theme-dark': tableTheme.mode === 'dark',
+          'table--theme-light': tableTheme.mode === 'light',
+          'table--theme-border-x': tableTheme.borderX,
+          'table--theme-border-y': tableTheme.borderY,
+          'table--theme-border-around': tableTheme.borderAround,
+        },
+      ]"
       :style="{
         'max-width': tableMaxWidthSize,
       }"
@@ -16,7 +19,7 @@
       <table ref="tableMain" class="table__content">
         <TableHeadGroupedComponent
           v-if="tableTheme.showHeader && hasChildren"
-          :fixed-header="tableTheme.fixedHeader"
+          :fixed-header="!!tableTheme.fixedHeader"
           :resize="resize"
           :table-head-data="(tableColumnDataHead as ColumnGroupedRowItem[])"
           :columns-data="tableHead"
@@ -28,7 +31,7 @@
         </TableHeadGroupedComponent>
         <TableHeadSimpleComponent
           v-else-if="tableTheme.showHeader && !hasChildren"
-          :fixed-header="tableTheme.fixedHeader"
+          :fixed-header="!!tableTheme.fixedHeader"
           :resize="resize"
           :columns-data="tableHead"
           :children-nested-length="props.childrenNestedLength"
@@ -107,7 +110,7 @@ interface IProps {
   maxWidth?: number | string
   resize?: boolean
   childrenNestedLength?: number
-  dragndrop?: boolean,
+  dragndrop?: boolean
   theme?: TableTheme
 }
 
@@ -120,7 +123,7 @@ const props = withDefaults(defineProps<IProps>(), {
   resize: true,
   childrenNestedLength: 1,
   dragndrop: true,
-  theme: undefined
+  theme: undefined,
 })
 
 const tableHead = ref<ColumnItem[] | ColumnGroupedItem[]>(props.tableHead),
@@ -186,18 +189,30 @@ function setTableTheme () {
   tableTheme.value = {
     mode: props.theme?.mode || 'dark',
     // eslint-disable-next-line no-prototype-builtins
-    borderAround: props.theme?.hasOwnProperty('borderAround') ? props.theme?.borderAround : true,
+    borderAround: props.theme?.hasOwnProperty('borderAround')
+      ? props.theme?.borderAround
+      : true,
     // eslint-disable-next-line no-prototype-builtins
-    borderX: props.theme?.hasOwnProperty('borderX') ? props.theme?.borderX : true,
+    borderX: props.theme?.hasOwnProperty('borderX')
+      ? props.theme?.borderX
+      : true,
     // eslint-disable-next-line no-prototype-builtins
-    borderY: props.theme?.hasOwnProperty('borderY') ? props.theme?.borderY : true,
+    borderY: props.theme?.hasOwnProperty('borderY')
+      ? props.theme?.borderY
+      : true,
     // eslint-disable-next-line no-prototype-builtins
-    fixedHeader: props.theme?.hasOwnProperty('fixedHeader') ? props.theme?.fixedHeader : false,
+    fixedHeader: props.theme?.hasOwnProperty('fixedHeader')
+      ? props.theme?.fixedHeader
+      : false,
     // eslint-disable-next-line no-prototype-builtins
-    showHeader: props.theme?.hasOwnProperty('showHeader') ? props.theme?.showHeader : true,
+    showHeader: props.theme?.hasOwnProperty('showHeader')
+      ? props.theme?.showHeader
+      : true,
     // eslint-disable-next-line no-prototype-builtins
-    showAccordionIcon: props.theme?.hasOwnProperty('showAccordionIcon') ? props.theme?.showAccordionIcon : true,
-    transition: props.theme?.transition || 'all .2s'
+    showAccordionIcon: props.theme?.hasOwnProperty('showAccordionIcon')
+      ? props.theme?.showAccordionIcon
+      : true,
+    transition: props.theme?.transition || 'all .2s',
   }
 }
 
