@@ -2,15 +2,21 @@
   <div class="table-main">
     <div
       ref="tableMainDiv"
-      class="table__wrapper table--theme-dark table--theme-border-x table--theme-border-y"
+      :class="['table__wrapper', {
+        'table--theme-dark': tableTheme.mode === 'dark',
+        'table--theme-light': tableTheme.mode === 'light',
+        'table--theme-border-x': tableTheme.borderX,
+        'table--theme-border-y': tableTheme.borderY,
+        'table--theme-border-around': tableTheme.borderAround
+      }]"
       :style="{
         'max-width': tableMaxWidthSize,
       }"
     >
       <table ref="tableMain" class="table__content">
         <TableHeadGroupedComponent
-          v-if="showHeader && hasChildren"
-          :fixed-header="fixedHeader"
+          v-if="tableTheme.showHeader && hasChildren"
+          :fixed-header="tableTheme.fixedHeader"
           :resize="resize"
           :table-head-data="(tableColumnDataHead as ColumnGroupedRowItem[])"
           :columns-data="tableHead"
@@ -21,8 +27,8 @@
           </template>
         </TableHeadGroupedComponent>
         <TableHeadSimpleComponent
-          v-else-if="showHeader && !hasChildren"
-          :fixed-header="fixedHeader"
+          v-else-if="tableTheme.showHeader && !hasChildren"
+          :fixed-header="tableTheme.fixedHeader"
           :resize="resize"
           :columns-data="tableHead"
           :children-nested-length="props.childrenNestedLength"
@@ -36,7 +42,7 @@
           :table-body="tableBody"
           :table-head="tableColumnDataBody"
           :children-nested-length="props.childrenNestedLength"
-          :show-accordion-arrow="showAccordionArrow"
+          :show-accordion-arrow="tableTheme.showAccordionIcon"
           :dragndrop="props.dragndrop"
           @dragndrop-changed="dragndropChanged"
         >
@@ -55,6 +61,8 @@
               :table-body="row.children ? row.children.bodyData : []"
               :max-width="tableMaxWidthSize"
               :children-nested-length="props.childrenNestedLength + 1"
+              :resize="props.resize"
+              :theme="props.theme"
               @dragndrop-changed="(data: TableDataItem[]) => dragndropChanged(data, row.id as number | string)"
             >
               <template v-for="(_, slot) in $slots" #[slot]="data: any">
@@ -91,20 +99,16 @@ import type TableDataItem from '@/interfaces/table/data-item-base'
 import type ColumnGroupedRowItem from '@/types/table/column-grouped-row'
 import type ColumnItemWidthType from '@/types/table/column-item-width'
 import type IResizerDataEmit from '@/interfaces/resizer-data-emit'
+import type TableTheme from '@/interfaces/table-themes'
 
 interface IProps {
   tableHead: ColumnItem[] | ColumnGroupedItem[]
   tableBody: TableDataItem[]
   maxWidth?: number | string
-  borderAround?: boolean
-  borderX?: boolean
-  borderY?: boolean
-  showHeader?: boolean
-  fixedHeader?: boolean
   resize?: boolean
   childrenNestedLength?: number
-  showAccordionArrow?: boolean
-  dragndrop?: boolean
+  dragndrop?: boolean,
+  theme?: TableTheme
 }
 
 const emits = defineEmits<{
@@ -113,18 +117,14 @@ const emits = defineEmits<{
 
 const props = withDefaults(defineProps<IProps>(), {
   maxWidth: '',
-  borderAround: false,
-  borderX: true,
-  borderY: true,
-  showHeader: true,
-  fixedHeader: false,
   resize: true,
   childrenNestedLength: 1,
-  showAccordionArrow: true,
   dragndrop: true,
+  theme: undefined
 })
 
 const tableHead = ref<ColumnItem[] | ColumnGroupedItem[]>(props.tableHead),
+  tableTheme = ref<TableTheme>({} as TableTheme),
   tableWidth = ref<number>(),
   tableHeadGrouped = ref<ColumnGroupedRowItem[]>([]),
   tableHeadSpreated = ref<ColumnItem[]>([]),
@@ -182,6 +182,25 @@ const tableColumnDataBody = computed<ColumnItem[]>(() => {
   }
 })
 
+function setTableTheme () {
+  tableTheme.value = {
+    mode: props.theme?.mode || 'dark',
+    // eslint-disable-next-line no-prototype-builtins
+    borderAround: props.theme?.hasOwnProperty('borderAround') ? props.theme?.borderAround : true,
+    // eslint-disable-next-line no-prototype-builtins
+    borderX: props.theme?.hasOwnProperty('borderX') ? props.theme?.borderX : true,
+    // eslint-disable-next-line no-prototype-builtins
+    borderY: props.theme?.hasOwnProperty('borderY') ? props.theme?.borderY : true,
+    // eslint-disable-next-line no-prototype-builtins
+    fixedHeader: props.theme?.hasOwnProperty('fixedHeader') ? props.theme?.fixedHeader : false,
+    // eslint-disable-next-line no-prototype-builtins
+    showHeader: props.theme?.hasOwnProperty('showHeader') ? props.theme?.showHeader : true,
+    // eslint-disable-next-line no-prototype-builtins
+    showAccordionIcon: props.theme?.hasOwnProperty('showAccordionIcon') ? props.theme?.showAccordionIcon : true,
+    transition: props.theme?.transition || 'all .2s'
+  }
+}
+
 function setTableWidth () {
   tableWidth.value = tableMainDiv.value?.offsetWidth as number
 }
@@ -209,6 +228,10 @@ function dragndropChanged (data: TableDataItem[], id?: number | string) {
 }
 
 const moveResizer = new MouseMoveResizer(tableHead.value)
+
+// Created
+
+setTableTheme()
 
 document.addEventListener('mousemove', (event) =>
   moveResizer.handleMouseMove(event)

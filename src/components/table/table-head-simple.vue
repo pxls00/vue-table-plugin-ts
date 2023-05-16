@@ -1,10 +1,10 @@
 <template>
-  <thead :class="['table__head', { 'table__head-fixed': props.fixedHeader }]">
+  <thead :class="['table__head', { 'table__head--fixed': props.fixedHeader }]">
     <th
       v-for="(column, index) in props.columnsData"
       :key="index"
       :style="{ width: `${column.width}px` }"
-      :class="['table__head-col', getClassOfCol(column)]"
+      :class="['table__head-col', getClassOfCol(column.class || '')]"
     >
       <slot
         :name="
