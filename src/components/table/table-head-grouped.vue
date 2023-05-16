@@ -1,5 +1,5 @@
 <template>
-  <thead :class="['table__head', { 'table__head-fixed': fixedHeader }]">
+  <thead :class="['table__head', { 'table__head--fixed': fixedHeader }]">
     <tr
       v-for="(rowItem, i) in props.tableHeadData"
       :key="i"
