@@ -1,14 +1,9 @@
 import type ItemClassType from '@/types/table/item-class'
 
-function getClassOfCol (classList: any): ItemClassType {
-  // eslint-disable-next-line no-prototype-builtins
-  if (Array.isArray(classList) && !!classList.length) {
+export default function getClassOfCol (classList: any): ItemClassType {
+  if (Array.isArray(classList)) {
     return classList.join(' ')
-
-    return classList
   }
 
-  return ''
+  return classList
 }
-
-export default getClassOfCol
