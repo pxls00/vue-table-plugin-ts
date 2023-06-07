@@ -95,23 +95,11 @@ class MouseMoveResizer {
       newParralelColumnWidth >= currentParallelColumn.minWidth &&
       newColumnWidth < newColumnWidthWithCanGetWidth
     ) {
-      console.log(
-        newColumnWidth,
-        currentColumn.width,
-        currentParallelColumn.width,
-        newColumnWidthWithCanGetWidth
-      )
       currentParallelColumn.width = newParralelColumnWidth
       currentColumn.width = newColumnWidth
     }
 
     if (newColumnWidth > newColumnWidthWithCanGetWidth) {
-      console.log(
-        newColumnWidth,
-        currentColumn.width,
-        currentParallelColumn.width,
-        newColumnWidthWithCanGetWidth
-      )
       currentParallelColumn.width = currentParallelColumn.minWidth
       currentColumn.width = newColumnWidthWithCanGetWidth
     }
