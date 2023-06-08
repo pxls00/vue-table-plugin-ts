@@ -19,7 +19,8 @@ export type TTableHeadItemWidth = string | number
 export type TTableHeadItemTextAligns = keyof typeof ETableItemTextAlignValues
 export type TId = string | number 
 export type TTableItemClass = string | string[]
-export type ITableItemField = IBodyItemDataField | string
+export type TTableItemField = IBodyItemDataField | string
+export type TTableHeadGroupedRow = IHeadItemGrouped[]
 
 // Interfaces
 export interface IHeadItemBase {
@@ -79,4 +80,10 @@ export interface ITableThemeOptions {
   showAccordionIcon?: boolean
   showHeader?: boolean
   fixedHeader?: boolean
+}
+
+export interface IResizeData {
+  index: number
+  key: string
+  el: HTMLSpanElement | undefined
 }
