@@ -30,13 +30,14 @@ export interface IHeadItemBase {
   width?: TTableHeadItemWidth
   class?: TTableItemClass
   textAlign?: TTableHeadItemTextAligns,
-  resizable?: boolean
+  resizable?: boolean,
+  children?: IHeadItemGrouped[]
 }
 
 export interface IHeadItemGrouped extends IHeadItemBase {
   colspan: number
   rowspan: number
-  children: IHeadItemGrouped
+  children: IHeadItemGrouped[]
 }
 
 export interface IBodyItemDataField {
