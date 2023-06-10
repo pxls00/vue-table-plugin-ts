@@ -22,7 +22,7 @@ ui.forEach((uiItem) => {
 
 // Route get path helper plugin
 import getRoutePath from '@/plugins/getRoutePath'
-app.use(getRoutePath) 
+app.use(getRoutePath)
 
 // provide
 app.mount('#app')
