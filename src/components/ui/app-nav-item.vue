@@ -1,7 +1,13 @@
 <template>
-  <li :class="['nav-item p-y-8 p-x-10']" v-bind="$attrs">
-    <router-link :to="props.to" class="heading heading--4">
-      <slot />
+  <li
+    :class="['nav-item p-y-8 p-x-10']"
+    v-bind="$attrs"
+  >
+    <router-link
+      :to="props.to"
+      class="heading heading--4"
+    >
+      <slot></slot>
     </router-link>
   </li>
 </template>

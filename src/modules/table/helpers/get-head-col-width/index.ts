@@ -1,5 +1,5 @@
 import generateHeadWidth from './get-head-col-width'
-import type {IHeadItemBase, TTableHeadGroupedRow} from '../../index.types'
+import type { IHeadItemBase, TTableHeadGroupedRow } from '../../index.types'
 
 class HeadColsWidth {
   private _columnsWithoutWidth: IHeadItemBase[] = []
@@ -9,31 +9,31 @@ class HeadColsWidth {
   private _columnsRowSpreated: IHeadItemBase[] = []
   private _columnsRowGrouped: TTableHeadGroupedRow[] = []
 
-  get columnsWithoutWidth () {
+  get columnsWithoutWidth() {
     return this._columnsWithoutWidth
   }
 
-  get overWidth () {
+  get overWidth() {
     return this._overWidth
   }
 
-  get columnsData () {
+  get columnsData() {
     return this._columnsData
   }
 
-  get tableWidth () {
+  get tableWidth() {
     return this._tableWidth
   }
 
-  get columnsRowSpreated () {
+  get columnsRowSpreated() {
     return this._columnsRowSpreated
   }
 
-  get columnsRowGrouped () {
+  get columnsRowGrouped() {
     return this._columnsRowGrouped
   }
 
-  constructor (
+  constructor(
     overWidth: number,
     columnsData: IHeadItemBase[],
     columnsRowSpreated: IHeadItemBase[],
@@ -46,7 +46,7 @@ class HeadColsWidth {
     this._columnsRowGrouped = columnsRowGrouped
   }
 
-  setHeadColsWidth (
+  setHeadColsWidth(
     data: IHeadItemBase[] = this._columnsData,
     maxWidth: number = this._tableWidth
   ) {
@@ -57,7 +57,7 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsWidthIfTheyExists (data: IHeadItemBase[], maxWidth: number): void {
+  setHeadColsWidthIfTheyExists(data: IHeadItemBase[], maxWidth: number): void {
     data.forEach((item) => {
       if (!item.width) {
         this._columnsWithoutWidth.push(item)
@@ -67,7 +67,7 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsWidthIfTheyNotExists (data: IHeadItemBase[]): void {
+  setHeadColsWidthIfTheyNotExists(data: IHeadItemBase[]): void {
     data.forEach((item) => {
       if (item.width && typeof item.width === 'number') {
         this._overWidth -= item.width
@@ -87,7 +87,7 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsGrouping (
+  setHeadColsGrouping(
     data: IHeadItemBase[] = this._columnsData,
     index: number = 0
   ): void {
@@ -114,7 +114,7 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsSpread (data: IHeadItemBase[] = this._columnsData): void {
+  setHeadColsSpread(data: IHeadItemBase[] = this._columnsData): void {
     data.forEach((item: IHeadItemBase) => {
       if (item.children && item.children.length) {
         this.setHeadColsSpread(item.children)

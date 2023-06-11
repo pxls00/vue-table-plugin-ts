@@ -60,7 +60,7 @@ const getRoutePath = inject('getRoutePath') as GetRoutePath
 
 setCurrentPage(route.path)
 
-function setCurrentPage (path: string) {
+function setCurrentPage(path: string) {
   routes.value.forEach((link: IRouteItem, index): void => {
     link.currentPage = path.startsWith(getRoutePath(link.href))
 
@@ -72,7 +72,7 @@ function setCurrentPage (path: string) {
   })
 }
 
-function setCurrentPageRoute (
+function setCurrentPageRoute(
   routesList: IRouteItem[] | any,
   path: string
 ): void {

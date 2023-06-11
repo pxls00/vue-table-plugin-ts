@@ -5,14 +5,14 @@ import getSlotName from '../../../helpers/get-slot-name'
 
 // types
 import type { PropType } from 'vue'
-import type {TTableHeadGroupedRow, IHeadItemBase} from '../../../index.types' 
+import type { TTableHeadGroupedRow, IHeadItemBase } from '../../../index.types'
 
 export default defineComponent({
   name: 'TableHeadGroupedComponent',
   props: {
     fixedHeader: {
       required: true,
-      type: Boolean
+      type: Boolean,
     },
     tableHeadData: {
       required: true,
@@ -25,15 +25,15 @@ export default defineComponent({
     childrenNestedLength: {
       required: false,
       default: 1,
-      type: Number
-    }
+      type: Number,
+    },
   },
-  setup () {
+  setup() {
     return {
       //methods
       getClassOfCol,
       getWidthByKeyCols,
-      getSlotName
+      getSlotName,
     }
-  }
+  },
 })

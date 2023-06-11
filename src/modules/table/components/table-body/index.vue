@@ -22,14 +22,12 @@
             v-for="(column, colIndex) in tableHead"
             :key="colIndex"
             :class="['table__body-data']"
-            :style="{ 
-              width: `${column.width}px`
+            :style="{
+              width: `${column.width}px`,
             }"
           >
             <slot
-              :name="
-                getSlotName(`cell(${column.key})`, childrenNestedLength)
-              "
+              :name="getSlotName(`cell(${column.key})`, childrenNestedLength)"
               :value="
                 typeof row.data[column.key] === 'object'
                   ? row.data[column.key]
@@ -61,7 +59,7 @@
           <slot
             v-if="!!row.children"
             name="table__item-accordion"
-            :row="(row)"
+            :row="row"
           >
             {{ row }}
           </slot>
@@ -71,6 +69,6 @@
   </VueDraggableNext>
 </template>
 
-<script lang="ts" src='./index.ts'></script>
+<script lang="ts" src="./index.ts"></script>
 
-<style src='./index.scss' lang='scss' scoped></style>
+<style src="./index.scss" lang="scss" scoped></style>

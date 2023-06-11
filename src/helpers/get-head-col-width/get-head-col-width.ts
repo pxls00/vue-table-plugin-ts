@@ -1,6 +1,6 @@
 import type ColumnItemWidthType from '@/types/table/column-item-width'
 
-function generateHeadWidth (
+function generateHeadWidth(
   width: ColumnItemWidthType,
   minWidth: number,
   maxWidth: number

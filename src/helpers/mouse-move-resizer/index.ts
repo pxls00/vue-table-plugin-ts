@@ -9,27 +9,27 @@ class MouseMoveResizer {
   private _startX: number = 0
   private _columnsData: ITableHeadColumnItem[] = []
 
-  get resizing (): boolean {
+  get resizing(): boolean {
     return this._resizing
   }
 
-  get resizeIndex (): number {
+  get resizeIndex(): number {
     return this._resizeIndex
   }
 
-  get startX (): number {
+  get startX(): number {
     return this._startX
   }
 
-  get columnsData (): ITableHeadColumnItem[] {
+  get columnsData(): ITableHeadColumnItem[] {
     return this._columnsData
   }
 
-  constructor (columnsData: ITableHeadColumnItem[]) {
+  constructor(columnsData: ITableHeadColumnItem[]) {
     this._columnsData = columnsData
   }
 
-  startResize ({ index, el }: IResizerDataEmit) {
+  startResize({ index, el }: IResizerDataEmit) {
     const eventTarget = event as Event | any
 
     this._resizeEL = el
@@ -38,7 +38,7 @@ class MouseMoveResizer {
     this._startX = eventTarget.pageX
   }
 
-  stopResize () {
+  stopResize() {
     this.resizeColumns(this._resizeNum)
 
     if (this._resizeEL) {
@@ -50,7 +50,7 @@ class MouseMoveResizer {
     this._startX = 0
   }
 
-  handleMouseMove (event: Event | any): void {
+  handleMouseMove(event: Event | any): void {
     if (this._resizing) {
       const deltaX: number = event.pageX - this.startX
 
@@ -77,7 +77,7 @@ class MouseMoveResizer {
     }
   }
 
-  resizeColumns (widthNumber: number): void {
+  resizeColumns(widthNumber: number): void {
     const currentColumn: ITableHeadColumnItem =
       this._columnsData[this._resizeIndex]
     const currentParallelColumn = this._columnsData[this._resizeIndex + 1]

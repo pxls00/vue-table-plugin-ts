@@ -21,7 +21,7 @@
           :ref="(el: any):void => {resizer[index] = el}"
           :class="['resize-handle table__head-col-resize']"
           @mousedown="startResize(index, column.key)"
-        />
+        ></span>
       </slot>
     </th>
   </thead>
@@ -59,11 +59,11 @@ const emits = defineEmits<{
   (e: 'startResize', data: IResizerDataEmit): IResizerDataEmit
 }>()
 
-function startResize (index: number, key: string): void {
+function startResize(index: number, key: string): void {
   emits('startResize', { index, key, el: resizer.value[index] })
 }
 
-function isCanResizeCol (index: number, column: ITableHeadColumnItem): boolean {
+function isCanResizeCol(index: number, column: ITableHeadColumnItem): boolean {
   if (
     index !== props.columnsData.length - 1 &&
     column.resizable !== false &&

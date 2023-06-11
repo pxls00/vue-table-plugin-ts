@@ -1,15 +1,15 @@
-import type {Ref} from 'vue' 
+import type { Ref } from 'vue'
 
 // Enums
 enum ETableThemeModes {
   'light',
-  'dark'
+  'dark',
 }
 
 enum ETableItemTextAlignValues {
   'left',
   'center',
-  'right'
+  'right',
 }
 
 // Types
@@ -17,20 +17,20 @@ export type TTableThemeModes = keyof typeof ETableThemeModes
 export type TTableThemeTransition = string | number
 export type TTableHeadItemWidth = string | number
 export type TTableHeadItemTextAligns = keyof typeof ETableItemTextAlignValues
-export type TId = string | number 
+export type TId = string | number
 export type TTableItemClass = string | string[]
 export type TTableItemField = IBodyItemDataField | string
 export type TTableHeadGroupedRow = IHeadItemGrouped[]
 
 // Interfaces
 export interface IHeadItemBase {
-  label: string,
-  key: string,
+  label: string
+  key: string
   minWidth: number
   width?: TTableHeadItemWidth
   class?: TTableItemClass
-  textAlign?: TTableHeadItemTextAligns,
-  resizable?: boolean,
+  textAlign?: TTableHeadItemTextAligns
+  resizable?: boolean
   children?: IHeadItemGrouped[]
 }
 
@@ -41,7 +41,7 @@ export interface IHeadItemGrouped extends IHeadItemBase {
 }
 
 export interface IBodyItemDataField {
-  value: string,
+  value: string
   class: TTableItemClass
 }
 
@@ -50,14 +50,14 @@ export interface IBodyItemData {
 }
 
 export interface ITableDataItemChildren {
-  headData?: IHeadItemBase[] | IHeadItemGrouped[],
+  headData?: IHeadItemBase[] | IHeadItemGrouped[]
   bodyData: IBodyItemBase[]
 }
 
 export interface IBodyItemBase {
-  id: TId,
+  id: TId
   data: IBodyItemData
-  children: ITableDataItemChildren,
+  children: ITableDataItemChildren
   isOpenAccordion?: Ref<boolean>
 }
 

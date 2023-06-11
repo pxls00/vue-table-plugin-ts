@@ -16,7 +16,10 @@
         'max-width': tableMaxWidthSize,
       }"
     >
-      <table ref="tableMain" class="table__content">
+      <table
+        ref="tableMain"
+        class="table__content"
+      >
         <TableHeadGroupedComponent
           v-if="tableTheme.showHeader && hasChildren"
           :fixed-header="!!tableTheme.fixedHeader"
@@ -25,8 +28,11 @@
           :columns-data="tableHead"
           :children-nested-length="props.childrenNestedLength"
         >
-          <template v-for="(_, slot) in $slots" #[slot]>
-            <slot :name="slot" />
+          <template
+            v-for="(_, slot) in $slots"
+            #[slot]
+          >
+            <slot :name="slot"></slot>
           </template>
         </TableHeadGroupedComponent>
         <TableHeadSimpleComponent
@@ -37,8 +43,11 @@
           :children-nested-length="props.childrenNestedLength"
           @start-resize="startResize"
         >
-          <template v-for="(_, slot) in $slots" #[slot]>
-            <slot :name="slot" />
+          <template
+            v-for="(_, slot) in $slots"
+            #[slot]
+          >
+            <slot :name="slot"></slot>
           </template>
         </TableHeadSimpleComponent>
         <TableBodyComponent
@@ -49,8 +58,14 @@
           :dragndrop="props.dragndrop"
           @dragndrop-changed="dragndropChanged"
         >
-          <template v-for="(_, slot) in $slots" #[slot]="data">
-            <slot :name="slot" :data="{ ...data }" />
+          <template
+            v-for="(_, slot) in $slots"
+            #[slot]="data"
+          >
+            <slot
+              :name="slot"
+              :data="{ ...data }"
+            ></slot>
           </template>
           <template #table__item-accordion="{ row }">
             <TableComponent
@@ -68,8 +83,14 @@
               :theme="props.theme"
               @dragndrop-changed="(data: TableDataItem[]) => dragndropChanged(data, row.id as number | string)"
             >
-              <template v-for="(_, slot) in $slots" #[slot]="data: any">
-                <slot :name="slot" :data="{ ...data }" />
+              <template
+                v-for="(_, slot) in $slots"
+                #[slot]="data: any"
+              >
+                <slot
+                  :name="slot"
+                  :data="{ ...data }"
+                ></slot>
               </template>
             </TableComponent>
           </template>
@@ -150,7 +171,7 @@ const tableMaxWidth = computed<number | undefined | string>(() => {
 
     return props.maxWidth
   }
-
+  // console.log(tableWidth.value)
   return tableWidth.value
 })
 
@@ -185,7 +206,7 @@ const tableColumnDataBody = computed<ColumnItem[]>(() => {
   }
 })
 
-function setTableTheme () {
+function setTableTheme() {
   tableTheme.value = {
     mode: props.theme?.mode || 'dark',
     // eslint-disable-next-line no-prototype-builtins
@@ -216,15 +237,15 @@ function setTableTheme () {
   }
 }
 
-function setTableWidth () {
+function setTableWidth() {
   tableWidth.value = tableMainDiv.value?.offsetWidth as number
 }
 
-function startResize ({ index, key, el }: IResizerDataEmit) {
+function startResize({ index, key, el }: IResizerDataEmit) {
   moveResizer.startResize({ index, key, el })
 }
 
-function dragndropChanged (data: TableDataItem[], id?: number | string) {
+function dragndropChanged(data: TableDataItem[], id?: number | string) {
   if (id) {
     const _ = props.tableBody.map((item) => {
       if (item.id === id && item.children) {
