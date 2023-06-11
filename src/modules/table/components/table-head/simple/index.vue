@@ -7,9 +7,7 @@
       :class="['table__head-col', getClassOfCol(column.class || '')]"
     >
       <slot
-        :name="
-          getSlotName(`cell-head(${column.key})`, childrenNestedLength)
-        "
+        :name="getSlotName(`cell-head(${column.key})`, childrenNestedLength)"
         :value="column.label"
         :item="column"
       >
@@ -18,7 +16,7 @@
         </p>
         <span
           v-if="isCanResizeCol(index, column)"
-          :ref="(el: any):void => {resizer[index] = el}"
+          :ref="(el: any) => {resizer[index] = el}"
           :class="['resize-handle table__head-col-resize']"
           @mousedown="startResize(index, column.key)"
         ></span>
@@ -27,4 +25,4 @@
   </thead>
 </template>
 
-<script src='./index.ts' lang='ts'></script>
+<script src="./index.ts" lang="ts"></script>

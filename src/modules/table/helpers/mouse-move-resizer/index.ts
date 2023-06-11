@@ -1,4 +1,4 @@
-import type {IHeadItemBase, IResizeData} from '../../index.types'
+import type { IHeadItemBase, IResizeData } from '../../index.types'
 
 class MouseMoveResizer {
   private _resizing: boolean = false
@@ -8,27 +8,27 @@ class MouseMoveResizer {
   private _startX: number = 0
   private _columnsData: IHeadItemBase[] = []
 
-  get resizing (): boolean {
+  get resizing(): boolean {
     return this._resizing
   }
 
-  get resizeIndex (): number {
+  get resizeIndex(): number {
     return this._resizeIndex
   }
 
-  get startX (): number {
+  get startX(): number {
     return this._startX
   }
 
-  get columnsData (): IHeadItemBase[] {
+  get columnsData(): IHeadItemBase[] {
     return this._columnsData
   }
 
-  constructor (columnsData: IHeadItemBase[]) {
+  constructor(columnsData: IHeadItemBase[]) {
     this._columnsData = columnsData
   }
 
-  startResize ({ index, el }: IResizeData) {
+  startResize({ index, el }: IResizeData) {
     const eventTarget = event as MouseEvent
 
     this._resizeEL = el
@@ -37,7 +37,7 @@ class MouseMoveResizer {
     this._startX = eventTarget.pageX
   }
 
-  stopResize () {
+  stopResize() {
     this.resizeColumns(this._resizeNum)
 
     if (this._resizeEL) {
@@ -49,7 +49,7 @@ class MouseMoveResizer {
     this._startX = 0
   }
 
-  handleMouseMove (event: Event | any): void {
+  handleMouseMove(event: Event | any): void {
     if (this._resizing) {
       const deltaX: number = event.pageX - this.startX
 
@@ -76,9 +76,8 @@ class MouseMoveResizer {
     }
   }
 
-  resizeColumns (widthNumber: number): void {
-    const currentColumn: IHeadItemBase =
-      this._columnsData[this._resizeIndex]
+  resizeColumns(widthNumber: number): void {
+    const currentColumn: IHeadItemBase = this._columnsData[this._resizeIndex]
     const currentParallelColumn = this._columnsData[this._resizeIndex + 1]
     const newColumnWidth: number =
       (currentColumn.width as number) + widthNumber * -1

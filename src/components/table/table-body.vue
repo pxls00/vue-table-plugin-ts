@@ -57,7 +57,7 @@
                 'table__body-data-accordion-icon',
                 { opened: row.isOpenAccordion },
               ]"
-            />
+            ></span>
           </td>
         </tbody>
         <tbody v-if="row.isOpenAccordion">
@@ -119,15 +119,15 @@ const dragOptions = ref<Object>({
 })
 
 const tableDataListForDragNDrop = computed<ITableBodyItem[]>({
-  get () {
+  get() {
     return rowsData.value
   },
-  set (value: ITableBodyItem[]) {
+  set(value: ITableBodyItem[]) {
     rowsData.value = value
   },
 })
 
-function generateTableData () {
+function generateTableData() {
   return rowsData.value.map((item) => {
     if (item.children && !!item.children.bodyData.length) {
       item.isOpenAccordion = ref<boolean>(false)
@@ -135,13 +135,13 @@ function generateTableData () {
   })
 }
 
-function dataRowClicked (row: any, rowIndex: number) {
+function dataRowClicked(row: any, rowIndex: number) {
   if (row.children) {
     row.isOpenAccordion = !row.isOpenAccordion
   }
 }
 
-function changed (event: Event): void {
+function changed(event: Event): void {
   emits('dragndropChanged', tableDataListForDragNDrop.value)
 }
 

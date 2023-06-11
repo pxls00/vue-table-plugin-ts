@@ -1,8 +1,7 @@
 <template>
-  <TableMain
+  <TableComponent
     :table-head="tableColumns"
     :table-body="tableData"
-    :resize="false"
     :theme="tableTheme"
     @dragndrop-changed="dragndropChanged"
   >
@@ -12,14 +11,11 @@
     <template #2_cell(actions)>
       <span class="drag-btn_2">||</span>
     </template>
-  </TableMain>
-  <br>
-  <br>
-  <br>
-  <br>
-  <TableMain
+  </TableComponent>
+  <!-- <TableMain
     :table-head="tableColumns"
     :table-body="tableData"
+    :theme="tableTheme"
     @dragndrop-changed="dragndropChanged"
   >
     <template #cell(actions)>
@@ -28,23 +24,7 @@
     <template #2_cell(actions)>
       <span class="drag-btn_2">||</span>
     </template>
-  </TableMain>
-  <br>
-  <br>
-  <br>
-  <br>
-  <TableMain
-    :table-head="tableColumns"
-    :table-body="tableData"
-    @dragndrop-changed="dragndropChanged"
-  >
-    <template #cell(actions)>
-      <span class="drag-btn">|||</span>
-    </template>
-    <template #2_cell(actions)>
-      <span class="drag-btn_2">||</span>
-    </template>
-  </TableMain>
+  </TableMain> -->
 </template>
 
 <script lang="ts">
@@ -58,7 +38,8 @@ export default defineComponent({
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-import TableMain from '@/components/table/table-main.vue'
+// import TableMain from '@/components/table/table-main.vue'
+import { TableComponent } from '@/modules/table'
 
 import type ITableHead from '@/interfaces/table/column-item'
 import type IDataItem from '@/interfaces/table/data-item-base'
@@ -72,13 +53,13 @@ const tableColumns = ref<ITableHead[]>([
   {
     label: '',
     key: 'actions',
-    width: 50,
+    // width: 50,
     minWidth: 30,
   },
   {
     label: 'ID',
     key: 'id',
-    width: 50,
+    // width: 50,
     minWidth: 50,
   },
   {
@@ -89,7 +70,7 @@ const tableColumns = ref<ITableHead[]>([
   {
     label: 'Full Name',
     key: 'full_name',
-    width: 200,
+    // width: 200,
     minWidth: 50,
   },
 ])
@@ -110,49 +91,49 @@ const tableData = ref<IDataItem[]>([
       full_name: 'BAR_FULL_BAR',
       date_created: '02',
     },
-    children: {
-      bodyData: [
-        {
-          id: 8,
-          data: {
-            name_a: {
-              value: 'bar',
-              class: ['test test_!'],
-            },
-            full_name: 'bar_full_bar 1',
-            date_created: '08',
-          },
-          children: {
-            bodyData: [
-              {
-                id: 10,
-                data: {
-                  name_a: 'bar 2',
-                  full_name: 'bar_full_bar 2',
-                  date_created: '08',
-                },
-              },
-            ],
-          },
-        },
-        {
-          id: 8,
-          data: {
-            name_a: 'bar',
-            full_name: 'bar_full_bar',
-            date_created: '08',
-          },
-        },
-        {
-          id: 8,
-          data: {
-            name_a: 'bar',
-            full_name: 'bar_full_bar',
-            date_created: '08',
-          },
-        },
-      ],
-    },
+    // children: {
+    //   bodyData: [
+    //     {
+    //       id: 8,
+    //       data: {
+    //         name_a: {
+    //           value: 'bar',
+    //           class: ['test test_!'],
+    //         },
+    //         full_name: 'bar_full_bar 1',
+    //         date_created: '08',
+    //       },
+    //       children: {
+    //         bodyData: [
+    //           {
+    //             id: 10,
+    //             data: {
+    //               name_a: 'bar 2',
+    //               full_name: 'bar_full_bar 2',
+    //               date_created: '08',
+    //             },
+    //           },
+    //         ],
+    //       },
+    //     },
+    //     {
+    //       id: 8,
+    //       data: {
+    //         name_a: 'bar',
+    //         full_name: 'bar_full_bar',
+    //         date_created: '08',
+    //       },
+    //     },
+    //     {
+    //       id: 8,
+    //       data: {
+    //         name_a: 'bar',
+    //         full_name: 'bar_full_bar',
+    //         date_created: '08',
+    //       },
+    //     },
+    //   ],
+    // },
   },
   {
     id: 3,
@@ -177,18 +158,18 @@ const tableData = ref<IDataItem[]>([
       full_name: 'DOG_FULL_BAR',
       date_created_c1: '04',
     },
-    children: {
-      bodyData: [
-        {
-          id: 8,
-          data: {
-            name_a: 'bar',
-            full_name: 'bar_full_bar',
-            date_created: '08',
-          },
-        },
-      ],
-    },
+    // children: {
+    //   bodyData: [
+    //     {
+    //       id: 8,
+    //       data: {
+    //         name_a: 'bar',
+    //         full_name: 'bar_full_bar',
+    //         date_created: '08',
+    //       },
+    //     },
+    //   ],
+    // },
   },
   {
     id: 4,
@@ -205,7 +186,7 @@ const tableData = ref<IDataItem[]>([
   },
 ])
 
-function dragndropChanged (data: IDataItem[]) {
-  console.log(data)
+function dragndropChanged(data: IDataItem[]) {
+  // console.log(data)
 }
 </script>

@@ -1,7 +1,6 @@
 import type { TTableHeadItemWidth } from '../../index.types'
 
-
-function generateHeadWidth (
+function generateHeadWidth(
   width: TTableHeadItemWidth,
   minWidth: number,
   maxWidth: number
