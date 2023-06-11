@@ -11,31 +11,31 @@ class HeadColsWidth {
   private _columnsRowSpreated: IHeadItem[] = []
   private _columnsRowGrouped: IHeadGroupedRowItem[] = []
 
-  get columnsWithoutWidth () {
+  get columnsWithoutWidth() {
     return this._columnsWithoutWidth
   }
 
-  get overWidth () {
+  get overWidth() {
     return this._overWidth
   }
 
-  get columnsData () {
+  get columnsData() {
     return this._columnsData
   }
 
-  get tableWidth () {
+  get tableWidth() {
     return this._tableWidth
   }
 
-  get columnsRowSpreated () {
+  get columnsRowSpreated() {
     return this._columnsRowSpreated
   }
 
-  get columnsRowGrouped () {
+  get columnsRowGrouped() {
     return this._columnsRowGrouped
   }
 
-  constructor (
+  constructor(
     overWidth: number,
     columnsData: IHeadItem[],
     columnsRowSpreated: IHeadItem[],
@@ -48,7 +48,7 @@ class HeadColsWidth {
     this._columnsRowGrouped = columnsRowGrouped
   }
 
-  setHeadColsWidth (
+  setHeadColsWidth(
     data: IHeadItem[] = this._columnsData,
     maxWidth: number = this._tableWidth
   ) {
@@ -59,7 +59,7 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsWidthIfTheyExists (data: IHeadItem[], maxWidth: number): void {
+  setHeadColsWidthIfTheyExists(data: IHeadItem[], maxWidth: number): void {
     data.forEach((item) => {
       if (!item.width) {
         this._columnsWithoutWidth.push(item)
@@ -69,7 +69,7 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsWidthIfTheyNotExists (data: IHeadItem[]): void {
+  setHeadColsWidthIfTheyNotExists(data: IHeadItem[]): void {
     data.forEach((item) => {
       if (item.width && typeof item.width === 'number') {
         this._overWidth -= item.width
@@ -89,7 +89,7 @@ class HeadColsWidth {
     }
   }
 
-  setHeadColsGrouping (
+  setHeadColsGrouping(
     data: IHeadItem[] = this._columnsData,
     index: number = 0
   ): void {
@@ -116,7 +116,7 @@ class HeadColsWidth {
     })
   }
 
-  setHeadColsSpread (data: IHeadItem[] | any = this._columnsData): void {
+  setHeadColsSpread(data: IHeadItem[] | any = this._columnsData): void {
     data.forEach((item: IHeadItem | any) => {
       if (item.children && item.children.length) {
         this.setHeadColsSpread(item.children)

@@ -5,14 +5,14 @@ import getSlotName from '../../../helpers/get-slot-name'
 
 // types
 import type { PropType } from 'vue'
-import type { IHeadItemBase, IResizeData} from '../../../index.types' 
+import type { IHeadItemBase, IResizeData } from '../../../index.types'
 
 export default defineComponent({
   name: 'TableHeadSimpleComponent',
   props: {
     fixedHeader: {
       required: true,
-      type: Boolean
+      type: Boolean,
     },
     columnsData: {
       required: true,
@@ -21,24 +21,27 @@ export default defineComponent({
     childrenNestedLength: {
       required: false,
       default: 1,
-      type: Number
+      type: Number,
     },
     resize: {
       requred: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   emits: {
-    startResize: (_data: IResizeData) => _data as IResizeData
+    startResize: (_data: IResizeData) => _data as IResizeData,
   },
-  setup (props, context) {
+  setup(props, context) {
+    // console.log(props.columnsData)
+
+    // debugger
     const resizer = ref<HTMLSpanElement[]>([])
 
-    function startResize (index: number, key: string): void {
+    function startResize(index: number, key: string): void {
       context.emit('startResize', { index, key, el: resizer.value[index] })
     }
 
-    function isCanResizeCol (index: number, column: IHeadItemBase): boolean {
+    function isCanResizeCol(index: number, column: IHeadItemBase): boolean {
       if (
         index !== props.columnsData.length - 1 &&
         column.resizable !== false &&
@@ -46,7 +49,7 @@ export default defineComponent({
       ) {
         return true
       }
-    
+
       return false
     }
     return {
@@ -58,7 +61,7 @@ export default defineComponent({
       getWidthByKeyCols,
       getSlotName,
       startResize,
-      isCanResizeCol
+      isCanResizeCol,
     }
-  }
+  },
 })

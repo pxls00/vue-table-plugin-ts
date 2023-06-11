@@ -1,6 +1,5 @@
 import getWidthByKeyCols from './get-width-by-key-cols'
-import type ITableHead from '@/interfaces/table/column-item';
-
+import type ITableHead from '@/interfaces/table/column-item'
 
 const tableColumns: ITableHead[] = [
   {

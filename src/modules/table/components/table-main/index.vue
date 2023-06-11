@@ -24,7 +24,7 @@
           v-if="tableTheme.showHeader && hasChildren"
           :fixed-header="!!tableTheme.fixedHeader"
           :resize="resize"
-          :table-head-data="(tableColumnDataHead)"
+          :table-head-data="tableColumnDataHead"
           :columns-data="tableHead"
           :children-nested-length="childrenNestedLength"
         >
@@ -36,7 +36,6 @@
           </template>
         </TableHeadGroupedComponent>
         <TableHeadSimpleComponent
-          v-else-if="tableTheme.showHeader && !hasChildren"
           :fixed-header="!!tableTheme.fixedHeader"
           :resize="resize"
           :columns-data="tableHead"
@@ -62,7 +61,7 @@
             v-for="(_, slot) in $slots"
             #[slot]="data"
           >
-            <slot 
+            <slot
               :name="slot"
               :data="{ ...data }"
             ></slot>
@@ -81,13 +80,12 @@
               :children-nested-length="childrenNestedLength + 1"
               :resize="resize"
               :theme="theme"
-              @dragndrop-changed="(_:any) => dragndropChanged(_, row.id)"
             >
               <template
                 v-for="(_, slot) in $slots"
                 #[slot]="data"
               >
-                <slot 
+                <slot
                   :name="slot"
                   :data="{ ...data }"
                 ></slot>
@@ -100,4 +98,4 @@
   </div>
 </template>
 
-<script src='./index.ts' lang='ts'></script>
+<script src="./index.ts" lang="ts"></script>

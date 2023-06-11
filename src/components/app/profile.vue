@@ -7,8 +7,15 @@
       <div
         class="profile__content--avatar d-flex align-items-center justify-content-center m-r-8 white white2"
       >
-        <img v-if="user.avatar" :src="user.avatar" alt="profile avatar">
-        <span v-else class="heading heading--3">{{ user.name[0] }}</span>
+        <img
+          v-if="user.avatar"
+          :src="user.avatar"
+          alt="profile avatar"
+        />
+        <span
+          v-else
+          class="heading heading--3"
+        >{{ user.name[0] }}</span>
       </div>
       <div class="profile__content--name">
         <h4 class="heading heading--4 heading--white">
@@ -16,7 +23,10 @@
         </h4>
       </div>
     </div>
-    <div v-if="isShowed" class="profile__actions white w-100">
+    <div
+      v-if="isShowed"
+      class="profile__actions white w-100"
+    >
       <ul class="profile__list">
         <li
           v-for="item in props.moreRoutes"
