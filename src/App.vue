@@ -17,8 +17,9 @@ import DefaultLayout from '@/layouts/default.vue'
 
 // const route = useRoute()
 
-const layoutName = computed(() => 
-  // return route.meta.layout === 'default' ? DefaultLayout : AuthLayout
-   DefaultLayout
+const layoutName = computed(
+  () =>
+    // return route.meta.layout === 'default' ? DefaultLayout : AuthLayout
+    DefaultLayout
 )
 </script>
