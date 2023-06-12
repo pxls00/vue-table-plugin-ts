@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <SidebarMain />
+    <SidebarMainComponent />
     <div class="wrapper__content">
       <RouterView />
     </div>
@@ -16,7 +16,8 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import SidebarMain from '@/components/sidebar/sidebar-main.vue'
+// import SidebarMain from '@/components/sidebar/sidebar-main.vue'
+import { SidebarMainComponent } from '@/modules/sidebar'
 
 import { RouterView } from 'vue-router'
 </script>
