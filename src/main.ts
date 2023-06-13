@@ -14,15 +14,10 @@ app.use(router)
 // Styles
 import '@/assets/styles/main.scss'
 
-//Custom UI components
-import ui from '@/components/ui'
-ui.forEach((uiItem) => {
-  app.component(uiItem.name as string, uiItem)
-})
 
 // Route get path helper plugin
-import getRoutePath from '@/plugins/getRoutePath'
-app.use(getRoutePath)
+import {getRoutePathPlugin} from '@/modules/router/index'
+app.use(getRoutePathPlugin)
 
 // provide
 app.mount('#app')
