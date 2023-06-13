@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import getRoutePath from '@/helpers/routes'
+import { getRoutePath } from '@/modules/router'
 
 const routes: RouteRecordRaw[] = [
   {
