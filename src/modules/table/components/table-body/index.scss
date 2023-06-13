@@ -1,0 +1,21 @@
+.table__body {
+  &-data {
+    padding: 0.8rem 1rem;
+    font-size: 1.4rem;
+    position: relative;
+    &-accordion-icon {
+      height: 12px;
+      width: 12px;
+      border-top: 3px solid;
+      border-right: 3px solid;
+      position: absolute;
+      right: 10px;
+      transform: rotate(135deg);
+      transition: 0.2s;
+      &.opened {
+        top: 12px;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}

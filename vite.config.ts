@@ -23,6 +23,10 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
+          @import "./src/assets/styles/theme/fonts/index.scss";
+          @import "./src/assets/styles/theme/colors/index.scss";
+          @import "./src/assets/styles/variables.scss";
+          @import "./src/assets/styles/helpers/ui.scss";
         `,
       },
     },

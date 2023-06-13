@@ -1,0 +1,25 @@
+.sidebar {
+  max-width: $sidebar_default_witdth;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+    circle at 29% 0,
+    map-get($black, 'base'),
+    map-get($black, 'dark')
+  );
+  display: flex;
+  flex-direction: column;
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
