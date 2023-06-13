@@ -13,7 +13,20 @@ const routes: Routes = {
   signOut: '/sign-out',
 }
 
+enum Routers {
+  logistics = '/logistics',
+  carriers = '/carriers/',
+  carriersDirectory = '/carriers/directory',
+  carriersBase = '/carriers/base',
+  settings = '/settings',
+  signOut = '/sign-out',
+}
+
+const test = Routers
+
 const getRoutePath: GetRoutePath = function (routeName, additionArgs?) {
+  console.log(test)
+  
   const route = routes[routeName as keyof Routes]
 
   if (typeof route === 'function') {
