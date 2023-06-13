@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import carriersRoutes from '@/router/carriers'
 
-import getRoutePath from '@/helpers/routes'
+import { getRoutePath } from '@/modules/router'
 
 import HomePage from '@/pages/logistics.vue'
 
